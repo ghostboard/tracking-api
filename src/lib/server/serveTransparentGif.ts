@@ -1,6 +1,6 @@
 import { FastifyReply } from "fastify"
 
-export default function(reply: FastifyReply) {
+export default function(reply: FastifyReply) :FastifyReply {
     const buf = Buffer.alloc(43)
     const transparentGif = "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
     buf.write(transparentGif, "base64")

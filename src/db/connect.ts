@@ -19,7 +19,7 @@ export default async function(fastify: FastifyInstance): Promise<boolean>{
     // CONNECTION EVENTS
     // When successfully connected
     mongoose.connection.on('connected', () => {
-        fastify.log.info(`Mongoose connected to ${process.env.DATABASE} 🤖 ✅`);
+        fastify.log.info(`Mongoose connected to ${process.env.DATABASE} ✅`);
         // Here we send the ready signal to PM2
         if (process && process.send) {
             process.send('ready');

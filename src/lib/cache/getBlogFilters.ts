@@ -1,7 +1,7 @@
 import db from '../../db/models'
 import { client as cache } from '../../db/cache'
 
-async function getBlogFilters(blogId: string) {
+export default async function getBlogFilters(blogId: string) :Promise<string[]> {
     const key = `blog:${blogId}:ip_filters`;
     const expiration = 5 * 60;
     
@@ -26,5 +26,3 @@ async function getBlogFilters(blogId: string) {
         });
     });
 }
-
-module.exports = getBlogFilters;

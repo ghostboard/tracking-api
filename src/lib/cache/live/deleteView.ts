@@ -1,7 +1,7 @@
-import { client as cache } from '../../db/cache'
+import { client as cache } from '../../../db/cache'
 
-export default async function deleteBlogFilters(blogId: string) {
-    const key = `blog:${blogId}:ip_filters`;
+export default async function deleteView(viewId: string) {
+    const key = `live:view:${viewId}`;
     
     return new Promise((resolve, reject) => {
         cache.del(key, (err, out) => {

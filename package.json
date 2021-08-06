@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "build": "tsc -w",
+    "ts": "rm -rf build && tsc -w",
     "dev": "nodemon build/server.js",
     "start": "node build/server.js"
   },
@@ -14,21 +15,30 @@
   "author": "",
   "homepage": "https://github.com/ghostboard/api#readme",
   "dependencies": {
+    "@socket.io/redis-emitter": "^4.1.0",
+    "escape-string-regexp": "^5.0.0",
     "fastify": "^3.20.1",
     "fastify-cors": "^6.0.2",
     "fastify-env": "^2.1.1",
     "fastify-helmet": "^5.3.2",
     "fastify-no-icon": "^4.0.0",
     "fastify-plugin": "^3.0.0",
+    "geoip-country": "^3.4.1",
     "isbot": "^3.3.1",
+    "moment": "^2.29.1",
     "mongoose": "^5.13.5",
-    "redis": "^3.1.2"
+    "querystring": "^0.2.1",
+    "redis": "^3.1.2",
+    "referer-parser": "0.0.3",
+    "ua-parser-js": "^0.7.28"
   },
   "devDependencies": {
+    "@types/geoip-country": "^4.0.0",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^16.4.12",
     "@types/pino": "^6.3.11",
     "@types/redis": "^2.8.31",
+    "@types/ua-parser-js": "^0.7.36",
     "fast-glob": "^3.2.7",
     "jest": "^27.0.6",
     "nodemon": "^2.0.12",

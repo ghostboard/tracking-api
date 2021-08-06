@@ -14,6 +14,7 @@ const start = async () => {
         fastify.register(require('fastify-no-icon'))
         fastify.register(require('./db/connect'))
         fastify.register(require('./db/cache'))
+        fastify.register(require('./db/socket'))
         await loader(fastify)
         await fastify.listen(process.env.PORT || 4000)
         fastify.log.info('Server started successfully ✅')

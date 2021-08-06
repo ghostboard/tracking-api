@@ -9,13 +9,13 @@ export default async function (fastify: FastifyInstance): Promise<boolean> {
     };
     client = redis.createClient(config);
     client.on('ready', (e) => {
-        fastify.log.info('Redis is ready 🔥 ✅')
+        fastify.log.info('Redis is ready ✅')
         // client.config("SET", "notify-keyspace-events", "Ex");
 
         client.set('testing', 'reading')
         client.expire('testing', 10)
         client.get('testing', (e, data) => {
-            fastify.log.info('Read test from Redis OK ✅')
+            fastify.log.info('Redis test is OK ✅')
         })
         
     });

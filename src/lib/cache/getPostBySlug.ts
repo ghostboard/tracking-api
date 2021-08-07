@@ -1,6 +1,6 @@
-import escapeStringRegexp from 'escape-string-regexp'
 import db from '../../db/models'
 import { client as cache } from '../../db/cache'
+import escapeStringRegexp from '../util/escapeStringRegexp'
 
 export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{
     const key = `blog:${blogId}:post_by_slug:${slug}`;

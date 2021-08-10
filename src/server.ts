@@ -10,7 +10,7 @@ const fastify = Fastify({
 const start = async () => {
     try {
         fastify.register(require('fastify-env'), { confKey: 'ENV', dotenv: true, schema: { type: 'object' } })
-        fastify.register(require('fastify-cors'))
+        fastify.register(require('fastify-cors'), { origin: '*' })
         fastify.register(require('fastify-helmet'))
         fastify.register(require('fastify-no-icon'))
         fastify.register(require('./db/connect'))

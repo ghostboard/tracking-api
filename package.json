@@ -12,10 +12,14 @@
     "type": "git",
     "url": "git+https://github.com/ghostboard/api.git"
   },
+  "engines": {
+    "node": ">=12"
+  },
   "author": "",
   "homepage": "https://github.com/ghostboard/api#readme",
   "dependencies": {
     "@socket.io/redis-emitter": "^4.1.0",
+    "fast-glob": "^3.2.7",
     "fastify": "^3.20.1",
     "fastify-cors": "^6.0.2",
     "fastify-env": "^2.1.1",
@@ -38,7 +42,6 @@
     "@types/pino": "^6.3.11",
     "@types/redis": "^2.8.31",
     "@types/ua-parser-js": "^0.7.36",
-    "fast-glob": "^3.2.7",
     "jest": "^27.0.6",
     "nodemon": "^2.0.12",
     "pino-pretty": "^5.1.2",

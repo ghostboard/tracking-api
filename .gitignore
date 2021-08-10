@@ -6,6 +6,8 @@
 *.log
 
 # Elastic Beanstalk Files
+env.config
+network.config
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml

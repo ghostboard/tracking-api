@@ -1,8 +1,9 @@
 import { fastify as Fastify } from 'fastify'
 import loader from './loader'
 
+const isProduction = process.env.NODE_ENV == 'production'
 const fastify = Fastify({
-    logger: { prettyPrint: true },
+    logger: { prettyPrint: !isProduction },
     trustProxy: true
 })
 

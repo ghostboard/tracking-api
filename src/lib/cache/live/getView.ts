@@ -1,6 +1,6 @@
 import { client as cache } from '../../../db/cache'
 
-export default async function getView(viewId: string) {
+export default async function getView(viewId: string) :Promise<string> {
     const key = `live:view:${viewId}`;
     
     return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ export default async function getView(viewId: string) {
             if (item) {
                 return resolve(JSON.stringify(item));
             }
-            resolve(false);
+            resolve('');
         });
     });
 }

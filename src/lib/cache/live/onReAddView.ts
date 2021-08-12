@@ -1,4 +1,4 @@
-import existsView from './existsView'
+import getView from './getView'
 import setView from './setView'
 import incCountry from './incCountry'
 import incReferer from './incReferer'
@@ -7,19 +7,18 @@ import incMobileViews from './incMobileViews'
 import incDesktopViews from './incDesktopViews'
 import incTotalViews from './incTotalViews'
 
-export default async function onAddView(view: object) {
-    const { 
-        blog: blogId, 
-        visit: viewId,
-        url, mobile, desktop, country, referer
-    } = view as any;
-    console.log('>> redis onAddView input', view);
+export default async function onReAddView(viewId: string) {
+    console.log('>> redis onReAddView input', viewId);
     try {
-        const exists = await existsView(viewId);
-        console.log('>> redis onAddView exists?', exists);
-        if (exists) {
-            return false;
+        const redisData = await getView(viewId);
+        console.log('>> redis onReAddView redisData', redisData);
+        const view = JSON.parse(redisData);
+        const { url, country, referer, mobile, isShown = false } = view;
+        if (isShown) {
+            return false
         }
+        const blogId = view.blog;
+        view.isShown = true;
         await setView(view);
         const todo = [
             incTotalViews(blogId)
@@ -41,7 +40,7 @@ export default async function onAddView(view: object) {
         await Promise.all(todo);
         return true;
     } catch (e) {
-        console.log('>> redis error onAddView', e);
+        console.log('>> redis error onReAddView', e);
         return false;
     }
 }

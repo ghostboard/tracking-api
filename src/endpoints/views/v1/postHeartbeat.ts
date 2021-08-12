@@ -4,7 +4,7 @@ import mongoose from "mongoose"
 import db from '../../../db/models'
 import { socketio } from '../../../db/socket'
 import FEATURES_FLAGS from '../../../config/features'
-import onAddView from "../../../lib/cache/live/onAddView"
+import onReAddView from "../../../lib/cache/live/onReAddView"
 import onQuitView from "../../../lib/cache/live/onQuitView"
 import isMobile from "../../../lib/views/isMobile"
 import isTablet from "../../../lib/views/isTablet"
@@ -78,7 +78,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             ].indexOf(event) !== -1;
         if (isReading) {
             db.Live.updateOne({ visit: visitID }, { exit: null }).exec();
-            onAddView(visitID).then(console.log);
+            onReAddView(visitID).then(console.log);
         }
     }
     const visit = await db.Visit.findById(visitID).populate("blog").lean()

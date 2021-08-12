@@ -1,11 +1,10 @@
-const getView = require('./getView');
-const deleteView = require('./deleteView');
-const decCountry = require('./decCountry');
-const decReferer = require('./decReferer');
-const decUrl = require('./decUrl');
-const decMobileViews = require('./decMobileViews');
-const decDesktopViews = require('./decDesktopViews');
-const decTotalViews = require('./decTotalViews');
+import getView from './getView'
+import decCountry from './decCountry'
+import decReferer from './decReferer'
+import decUrl from './decUrl'
+import decMobileViews from './decMobileViews'
+import decDesktopViews from './decDesktopViews'
+import decTotalViews from './decTotalViews'
 
 export default async function onQuitView(viewId: string) {
     console.log('>> redis onQuitView input', viewId);
@@ -34,7 +33,6 @@ export default async function onQuitView(viewId: string) {
             todo.push(decReferer(blogId, referer));
         }
         await Promise.all(todo);
-        await deleteView(view);
         return true;
     } catch (e) {
         console.log('>> redis error onQuitView', e);

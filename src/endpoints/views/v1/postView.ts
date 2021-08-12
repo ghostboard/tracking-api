@@ -74,7 +74,8 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             slug,
             postId,
             lang: body.C ? body.C.split("-")[0] : null,
-            referer: body.D
+            referer: body.D,
+            visit: {}
         };
         const visit: any = await saveView(viewParams, req);
         const hasVisitId = visit && visit._id;
@@ -94,7 +95,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             created: new Date()
         };
         const hasReferer = !!visit.referer;
-        const isInternalReferer = hasReferer && visit.referer.includes(params.blog.domain || params.blog.url);
+        const isInternalReferer = hasReferer && visit.referer.includes(viewParams.blog.domain || viewParams.blog.url);
         if (hasReferer && !isInternalReferer) {
             newLive.referer = visit.referer;
             newLive.refererDomain = visit.refererDomain;
@@ -118,25 +119,25 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             db.LogHeartbeat.create(newHeartbeat);
         }
 
-        params.visit = visit;
+        viewParams.visit = visit;
 
         // Save post's first visit if proceed
-        const firstPostVisit = params.post && params.post._id && !params.post.firstVisit;
+        const firstPostVisit = viewParams.post && viewParams.post._id && !viewParams.post.firstVisit;
         if (firstPostVisit) {
             const query = {
-                _id: params.postId,
+                _id: viewParams.postId,
                 firstVisit: { $exists: false }
             };
             const update = {
-                firstVisit: params.visit.created
+                firstVisit: (viewParams.visit as any).created
             };
             db.Post.updateOne(query, update).exec();
         }
 
         await Promise.all([
-            afterView(params, req),
-            emitSetup(params, socketio),
-            emitDashboard(params, socketio)
+            afterView(viewParams, req),
+            emitSetup(viewParams, socketio),
+            emitDashboard(viewParams, socketio)
         ]);
     } catch (e) {
         console.log('error ', e);

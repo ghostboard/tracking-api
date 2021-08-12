@@ -5,7 +5,7 @@ import getDomain from '../util/getDomain'
 import hasGhostContentAPI from './hasGhostContentAPI'
 import hasMailgunNewsletter from './hasMailgunNewsletter'
 
-export default async function updateBlog(params: any, req: FastifyRequest) {
+export default async function afterView(params: any, req: FastifyRequest) {
     const body = (req.body as any)
     const update: any = {
         lastVisit: moment().utc().toDate()

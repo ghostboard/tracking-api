@@ -17,7 +17,7 @@ import emitSetup from "../../../lib/socket/emitSetup"
 
 export const method = 'POST'
 export const url = '/v1/views/:blogId'
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<Boolean> {
+export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
     try {
         const params = (req.params as any)
         const body = (req.body as any)
@@ -77,10 +77,14 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<B
             referer: body.D
         };
         const visit: any = await saveView(viewParams, req);
+        const hasVisitId = visit && visit._id;
+        if (!hasVisitId) {
+            return res.code(401).send(false)
+        }
         res.code(200).send(visit._id);
 
         const newLive: any = {
-            blog: params.blog._id.toString(),
+            blog: blog._id.toString(),
             visit: visit._id.toString(),
             url: visit.url,
             slug: visit.slug,
@@ -137,7 +141,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<B
     } catch (e) {
         console.log('error ', e);
     }
-    return true
+    return res
 }
 
 export default function (fastify: FastifyInstance) {

@@ -1,6 +1,6 @@
 import { client as cache } from '../../../db/cache'
 
-export default async function existsView(viewId: string) {
+export default async function existsView(viewId: string) :Promise<Boolean>{
     const key = `live:view:${viewId}`;
     
     return new Promise((resolve, reject) => {

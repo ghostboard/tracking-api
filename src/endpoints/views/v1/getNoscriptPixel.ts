@@ -9,7 +9,7 @@ import isPreview from "../../../lib/views/isPreview"
 import saveView from "../../../lib/views/saveView"
 
 export const method = 'GET'
-export const url = '/v1/noscript/:id/pixel.gif'
+export const url = '/noscript/:id/pixel.gif'
 
 export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
     const path = req.headers["referer"]

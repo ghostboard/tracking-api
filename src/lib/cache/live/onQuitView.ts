@@ -7,19 +7,17 @@ import decDesktopViews from './decDesktopViews'
 import decTotalViews from './decTotalViews'
 
 export default async function onQuitView(viewId: string) {
-    console.log('>> redis onQuitView input', viewId);
+    console.log('>> redis onQuitView input', viewId)
     try {
-        const redisData = await getView(viewId);
-        console.log('>> redis onQuitView redisData', redisData);
-        let view = JSON.parse(redisData);
+        const redisData = await getView(viewId)
+        console.log('>> redis onQuitView redisData', redisData)
+        let view = JSON.parse(redisData)
         if (typeof view === 'string') {
-            console.log('>> redis onQuitView before json.parse twice', view);
             view = JSON.parse(view)
-            console.log('>> redis onQuitView after json.parse twice', view);
         }
-        const { url, country, referer, mobile } = view;
+        const { url, country, referer, mobile } = view
         const blogId = view.blog;
-        console.log('>> redis onQuitView after getView', view);
+        console.log('>> redis onQuitView after getView', view)
         const todo = [
             decTotalViews(blogId)
         ];

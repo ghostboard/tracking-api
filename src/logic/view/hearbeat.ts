@@ -1,48 +1,23 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
 import moment from "moment"
 import mongoose from "mongoose"
-import db from '../../../db/models'
-import { socketio } from '../../../db/socket'
-import FEATURES_FLAGS from '../../../config/features'
-import onReAddView from "../../../lib/cache/live/onReAddView"
-import onQuitView from "../../../lib/cache/live/onQuitView"
-import isMobile from "../../../lib/views/isMobile"
-import isTablet from "../../../lib/views/isTablet"
+import db from '../../db/models'
+import { socketio } from '../../db/socket'
+import FEATURES_FLAGS from '../../config/features'
+import onReAddView from "../../lib/cache/live/onReAddView"
+import onQuitView from "../../lib/cache/live/onQuitView"
+import isMobile from "../../lib/views/isMobile"
+import isTablet from "../../lib/views/isTablet"
 
-export const method = 'POST'
-export const url = '/v1/views/:id/heartbeat'
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
-    res.code(200).send(true)
-
-    let body = (req.body as any)
-    const params = (req.params as any)
-
-    const isBeacon = typeof body === 'string';
-    if (isBeacon) {
-        try {
-            body = JSON.parse(body);
-        } catch (err) {
-            return res.code(401).send(false)
-        }
+export default async function heartbeat(viewId: string, time: number, event: string, useragent: string): Promise<any> {
+    const isValidId = mongoose.Types.ObjectId.isValid(viewId)
+    if (!isValidId) {
+        return { code: 401, message: 'Invalid viewId' }
     }
 
-    let visitID:string = '';
-    if (params.id) {
-        visitID = params.id;
-    } else if (body.C) {
-        visitID = body.C;
-    }
-
-    const proceed = visitID && body.A && mongoose.Types.ObjectId.isValid(visitID);
-    if (!proceed) {
-        return res.code(200).send(true)
-    }
-    const useragent = req.headers["user-agent"]
     const query = {
-        _id: visitID
+        _id: viewId
     };
     const now = moment();
-    let time = parseInt(body.A, 10);
     const isNegativeTime = time < 0;
     if (isNegativeTime) {
         time *= -1;
@@ -50,9 +25,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
     const update: any = {
         time
     };
-    let event: any = null;
-    if (body.B) {
-        event = body.B;
+    if (event) {
         const useragentIsMobile = isMobile(useragent);
         const useragentIsTablet = isTablet(useragent);
         const isDesktop = !useragentIsMobile && !useragentIsTablet;
@@ -66,8 +39,8 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
 
         const isOffline = exitEvents.indexOf(event) !== -1;
         if (isOffline) {
-            db.Live.updateOne({ visit: visitID }, { exit: new Date() }).exec();
-            onQuitView(visitID).then(console.log);
+            db.Live.updateOne({ visit: viewId }, { exit: new Date() }).exec();
+            onQuitView(viewId).then(console.log);
         }
         const isReading =
             [
@@ -77,11 +50,11 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
                 "visibilityState:visible"
             ].indexOf(event) !== -1;
         if (isReading) {
-            db.Live.updateOne({ visit: visitID }, { exit: null }).exec();
-            onReAddView(visitID).then(console.log);
+            db.Live.updateOne({ visit: viewId }, { exit: null }).exec();
+            onReAddView(viewId).then(console.log);
         }
     }
-    const visit = await db.Visit.findById(visitID).populate("blog").lean()
+    const visit = await db.Visit.findById(viewId).populate("blog").lean()
     const haveTime = visit && visit.created;
     const timeDiff = haveTime ? now.diff(moment(visit.created), 'seconds') : false;
     const fixTime = haveTime && update.time > timeDiff;
@@ -92,11 +65,9 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
 
     if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {
         const newHeartbeat: any = {
-            visit: visitID,
-            url: req.headers["referer"],
+            visit: viewId,
             useragent,
-            time: body.A,
-            ip: req.ip,
+            time,
             created: moment().toDate()
         };
         if (event) {
@@ -124,13 +95,5 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         });
     }
 
-    return res
-}
-
-export default function (fastify: FastifyInstance) {
-    fastify.route({
-        method,
-        url,
-        handler
-    })
+    return true
 }

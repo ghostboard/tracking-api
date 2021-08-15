@@ -1,5 +1,5 @@
 import { fastify as Fastify } from 'fastify'
-import loader from './loader'
+import router from './router'
 
 const isProduction = process.env.NODE_ENV == 'production'
 const fastify = Fastify({
@@ -16,7 +16,7 @@ const start = async () => {
         fastify.register(require('./db/connect'))
         fastify.register(require('./db/cache'))
         fastify.register(require('./db/socket'))
-        await loader(fastify)
+        await router(fastify)
         await fastify.listen(process.env.PORT || 4000)
         fastify.log.info('Server started successfully ✅')
     } catch (err) {

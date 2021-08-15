@@ -10,10 +10,16 @@ import incTotalViews from './incTotalViews'
 export default async function onReAddView(viewId: string) {
     console.log('>> redis onReAddView input', viewId);
     try {
-        const redisData = await getView(viewId);
-        console.log('>> redis onReAddView redisData', redisData);
-        const view = JSON.parse(redisData);
-        const { url, country, referer, mobile, isShown = false } = view;
+        const redisData = await getView(viewId)
+        console.log('>> redis onReAddView redisData', redisData)
+        let view = JSON.parse(redisData)
+        if (typeof view === 'string') {
+            console.log('>> redis onReAddView before json.parse twice', view);
+            view = JSON.parse(view)
+            console.log('>> redis onReAddView after json.parse twice', view);
+        }
+        const { url, country, referer, mobile, isShown = false } = view
+        console.log('>> redis onReAddView view object', view);
         if (isShown) {
             return false
         }

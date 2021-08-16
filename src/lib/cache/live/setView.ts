@@ -1,11 +1,12 @@
 import { client as cache } from '../../../db/cache'
 
-const SIX_HOUR = 6 * 60 * 60;
+const HOURS = 2;
+const EXPIRATION = HOURS * 60 * 60;
 
 export default async function setView(liveView: object) {
     const viewId = (liveView as any).visit;
     const key = `live:view:${viewId}`;
-    const expiration = SIX_HOUR;
+    const expiration = EXPIRATION;
 
     return new Promise((resolve, reject) => {
         const proceed = liveView && viewId;

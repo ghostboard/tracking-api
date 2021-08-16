@@ -7,19 +7,18 @@ import incMobileViews from './incMobileViews'
 import incDesktopViews from './incDesktopViews'
 import incTotalViews from './incTotalViews'
 
-export default async function onAddView(view: object) {
+export default async function onAddView(view: any) {
     const { 
         blog: blogId, 
         visit: viewId,
         url, mobile, desktop, country, referer
     } = view as any;
-    console.log('>> redis onAddView input', view);
     try {
         const exists = await existsView(viewId);
-        console.log('>> redis onAddView exists?', exists);
         if (exists) {
             return false;
         }
+        view.isShown = true;
         await setView(view);
         const todo = [
             incTotalViews(blogId)

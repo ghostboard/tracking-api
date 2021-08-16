@@ -40,7 +40,7 @@ export default async function heartbeat(viewId: string, time: number, event: str
         const isOffline = exitEvents.indexOf(event) !== -1;
         if (isOffline) {
             db.Live.updateOne({ visit: viewId }, { exit: new Date() }).exec();
-            onQuitView(viewId).then(console.log);
+            onQuitView(viewId).then();
         }
         const isReading =
             [
@@ -51,7 +51,7 @@ export default async function heartbeat(viewId: string, time: number, event: str
             ].indexOf(event) !== -1;
         if (isReading) {
             db.Live.updateOne({ visit: viewId }, { exit: null }).exec();
-            onReAddView(viewId).then(console.log);
+            onReAddView(viewId).then();
         }
     }
     const visit = await db.Visit.findById(viewId).populate("blog").lean()

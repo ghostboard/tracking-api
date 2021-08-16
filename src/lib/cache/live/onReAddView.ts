@@ -8,10 +8,8 @@ import incDesktopViews from './incDesktopViews'
 import incTotalViews from './incTotalViews'
 
 export default async function onReAddView(viewId: string) {
-    console.log('>> redis onReAddView input', viewId)
     try {
         const redisData = await getView(viewId)
-        console.log('>> redis onReAddView redisData', redisData)
         let view = JSON.parse(redisData)
         if (typeof view === 'string') {
             view = JSON.parse(view)

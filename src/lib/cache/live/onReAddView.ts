@@ -10,6 +10,9 @@ import incTotalViews from './incTotalViews'
 export default async function onReAddView(viewId: string) {
     try {
         const redisData = await getView(viewId)
+        if (!redisData) {
+            return false
+        }
         let view = JSON.parse(redisData)
         if (typeof view === 'string') {
             view = JSON.parse(view)

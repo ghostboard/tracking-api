@@ -5,6 +5,7 @@ import decUrl from './decUrl'
 import decMobileViews from './decMobileViews'
 import decDesktopViews from './decDesktopViews'
 import decTotalViews from './decTotalViews'
+import deleteView from './deleteView'
 
 export default async function onQuitView(viewId: string) {
     try {
@@ -33,6 +34,7 @@ export default async function onQuitView(viewId: string) {
             todo.push(decReferer(blogId, referer));
         }
         await Promise.all(todo);
+        await deleteView(viewId)
         return true;
     } catch (e) {
         console.log('>> redis error onQuitView', e);

@@ -5,6 +5,7 @@ const EXPIRATION = HOURS * 60 * 60;
 
 export default async function setView(liveView: object) {
     const viewId = (liveView as any).visit;
+    const dataKey = `view:${viewId}`;
     const key = `live:view:${viewId}`;
     const expiration = EXPIRATION;
 
@@ -14,6 +15,7 @@ export default async function setView(liveView: object) {
             return resolve(false);
         }
         cache.setex(key, expiration, JSON.stringify(liveView));
+        cache.setex(dataKey, expiration*2, JSON.stringify(liveView));
         resolve(true);
     });
 }

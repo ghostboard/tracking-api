@@ -1,4 +1,4 @@
-import { client as cache } from '../../../db/cache'
+import { client as cache } from '../../../sources/redis'
 
 export default async function deleteView(viewId: string) {
     const key = `live:view:${viewId}`;

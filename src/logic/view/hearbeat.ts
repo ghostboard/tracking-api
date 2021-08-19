@@ -1,7 +1,7 @@
 import moment from "moment"
 import mongoose from "mongoose"
-import db from '../../db/models'
-import { socketio } from '../../db/socket'
+import db from '../../models'
+import { socketio } from '../../sources/socketio'
 import FEATURES_FLAGS from '../../config/features'
 import onReAddView from "../../lib/cache/live/onReAddView"
 import onQuitView from "../../lib/cache/live/onQuitView"

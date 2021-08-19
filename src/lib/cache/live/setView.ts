@@ -1,4 +1,4 @@
-import { client as cache } from '../../../db/cache'
+import { client as cache } from '../../../sources/redis'
 
 const HOURS = 2;
 const EXPIRATION = HOURS * 60 * 60;

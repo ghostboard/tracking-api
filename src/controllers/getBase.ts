@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import db from '../db/models'
-import { client as cache } from '../db/cache'
+import db from '../models'
+import { client as cache } from '../sources/redis'
 
 export const method = 'GET'
 export const url = '/'

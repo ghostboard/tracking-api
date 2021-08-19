@@ -1,5 +1,5 @@
-import db from '../../db/models'
-import { client as cache } from '../../db/cache'
+import db from '../../models'
+import { client as cache } from '../../sources/redis'
 import escapeStringRegexp from '../util/escapeStringRegexp'
 
 export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{

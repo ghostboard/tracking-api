@@ -1,4 +1,4 @@
-import db from '../../db/models'
+import db from '../../models'
 
 export default async function emitDashboard(params, io) {
     const query = {

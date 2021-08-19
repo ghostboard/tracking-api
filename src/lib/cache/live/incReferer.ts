@@ -1,4 +1,4 @@
-import { client as cache } from '../../../db/cache'
+import { client as cache } from '../../../sources/redis'
 
 export default async function incReferer(blogId: string, country: string) {
     const key = `live:blog:${blogId}:referers`;

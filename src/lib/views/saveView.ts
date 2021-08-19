@@ -4,7 +4,7 @@ import querystring from 'querystring'
 import urlParser from 'url'
 import geoip from 'geoip-country'
 import { FastifyRequest } from "fastify"
-import db from '../../db/models'
+import db from '../../models'
 import isEmail from "./isEmail"
 import isMobile from "./isMobile"
 import isTablet from "./isTablet"

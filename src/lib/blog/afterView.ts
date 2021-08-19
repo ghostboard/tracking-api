@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { FastifyRequest } from "fastify"
-import db from '../../db/models'
+import db from '../../models'
 import getDomain from '../util/getDomain'
 import hasGhostContentAPI from './hasGhostContentAPI'
 import hasMailgunNewsletter from './hasMailgunNewsletter'

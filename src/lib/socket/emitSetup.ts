@@ -1,4 +1,4 @@
-import db from '../../db/models'
+import db from '../../models'
 
 export default async function emitSetup(params, io) {
     const proceedEmit = params.isFirstVisit || !params.blog.firstVisit;

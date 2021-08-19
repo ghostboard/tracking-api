@@ -1,5 +1,5 @@
-import db from '../../db/models'
-import { client as cache } from '../../db/cache'
+import db from '../../models'
+import { client as cache } from '../../sources/redis'
 
 export default async function getBlogFilters(blogId: string) :Promise<string[]> {
     const key = `blog:${blogId}:ip_filters`;

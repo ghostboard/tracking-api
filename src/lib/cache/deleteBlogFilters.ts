@@ -1,4 +1,4 @@
-import { client as cache } from '../../db/cache'
+import { client as cache } from '../../sources/redis'
 
 export default async function deleteBlogFilters(blogId: string) {
     const key = `blog:${blogId}:ip_filters`;

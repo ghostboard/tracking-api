@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
 import moment from "moment"
-import db from '../../../db/models'
-import { socketio } from '../../../db/socket'
+import db from '../../../models'
+import { socketio } from '../../../sources/socketio'
 import FEATURES_FLAGS from '../../../config/features'
 import getBlogFilters from "../../../lib/cache/getBlogFilters"
 import getBlogForVisits from "../../../lib/cache/getBlogForVisits"

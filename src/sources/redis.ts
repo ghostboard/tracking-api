@@ -4,6 +4,21 @@ import { FastifyInstance } from 'fastify'
 export let client: redis.RedisClient;
 
 export default async function (fastify: FastifyInstance): Promise<boolean> {
+    client = redis.createClient(getConfig());
+    client.on('ready', (e) => {
+        fastify.log.info('Redis is ready ✅')
+
+        client.set('testing', 'reading')
+        client.expire('testing', 10)
+        client.get('testing', (e, data) => {
+            fastify.log.info('Redis test is OK ✅')
+        })
+        
+    });
+    return true;
+}
+
+export function getConfig(): string {
     let config: any = {};
     if (process.env.REDIS_URL) {
         config.url = process.env.REDIS_URL
@@ -16,19 +31,7 @@ export default async function (fastify: FastifyInstance): Promise<boolean> {
             config.tls = {}
         }
     } else {
-        fastify.log.info('>> Not available process.env.REDIS... 🚨')
+        console.log('>> Not available process.env.REDIS... 🚨')
     }
-
-    client = redis.createClient(config);
-    client.on('ready', (e) => {
-        fastify.log.info('Redis is ready ✅')
-
-        client.set('testing', 'reading')
-        client.expire('testing', 10)
-        client.get('testing', (e, data) => {
-            fastify.log.info('Redis test is OK ✅')
-        })
-        
-    });
-    return true;
+    return config
 }

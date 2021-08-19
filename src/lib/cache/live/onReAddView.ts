@@ -44,7 +44,7 @@ export default async function onReAddView(viewId: string) {
         await Promise.all(todo);
         return true;
     } catch (e) {
-        console.log('>> redis error onReAddView', e);
+        console.error('>> redis error onReAddView', e);
         return false;
     }
 }

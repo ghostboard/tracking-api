@@ -102,7 +102,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             newLive.hasRefererIcon = visit.hasRefererIcon;
         }
         db.Live.create(newLive);
-        onAddView(newLive).then(console.log);
+        onAddView(newLive).then();
 
         if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {
             const newHeartbeat: any = {
@@ -140,7 +140,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             emitDashboard(viewParams, socketio)
         ]);
     } catch (e) {
-        console.log('error ', e);
+        console.error('Error postView ', e);
     }
     return res
 }

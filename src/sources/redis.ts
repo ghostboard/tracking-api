@@ -31,7 +31,7 @@ export function getConfig(): string {
             config.tls = {}
         }
     } else {
-        console.log('>> Not available process.env.REDIS... 🚨')
+        console.error('>> Not available process.env.REDIS... 🚨')
     }
     return config
 }

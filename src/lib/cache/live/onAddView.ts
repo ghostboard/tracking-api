@@ -40,7 +40,7 @@ export default async function onAddView(view: any) {
         await Promise.all(todo);
         return true;
     } catch (e) {
-        console.log('>> redis error onAddView', e);
+        console.error('>> redis error onAddView', e);
         return false;
     }
 }

@@ -40,7 +40,7 @@ export default async function onQuitView(viewId: string) {
         await deleteView(viewId)
         return true;
     } catch (e) {
-        console.log('>> redis error onQuitView', e);
+        console.error('>> redis error onQuitView', e);
         return false;
     }
 }

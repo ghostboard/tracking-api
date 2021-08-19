@@ -1,5 +1,7 @@
+import dotenv from 'dotenv'
 import { fastify as Fastify } from 'fastify'
 import router from './router'
+dotenv.config()
 
 const isProduction = process.env.NODE_ENV == 'production'
 const fastify = Fastify({
@@ -9,7 +11,6 @@ const fastify = Fastify({
 
 const start = async () => {
     try {
-        await fastify.register(require('fastify-env'), { confKey: 'ENV', dotenv: true, schema: { type: 'object' } })
         fastify.register(require('fastify-cors'), { origin: '*' })
         fastify.register(require('fastify-helmet'))
         fastify.register(require('fastify-no-icon'))

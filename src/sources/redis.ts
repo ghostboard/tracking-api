@@ -18,8 +18,7 @@ export default async function (fastify: FastifyInstance): Promise<boolean> {
     } else {
         fastify.log.info('>> Not available process.env.REDIS... 🚨')
     }
-    fastify.log.info('>> redis config', config)
-    fastify.log.info('>> redis process.env', process.env)
+
     client = redis.createClient(config);
     client.on('ready', (e) => {
         fastify.log.info('Redis is ready ✅')

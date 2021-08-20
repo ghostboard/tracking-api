@@ -4,14 +4,14 @@ import incCountry from './incCountry'
 import incReferer from './incReferer'
 import incUrl from './incUrl'
 import incMobileViews from './incMobileViews'
-import incDesktopViews from './incDesktopViews'
 import incTotalViews from './incTotalViews'
+import { client as cache } from '../../../sources/redis'
 
 export default async function onAddView(view: any) {
     const { 
         blog: blogId, 
         visit: viewId,
-        url, mobile, desktop, country, referer
+        url, mobile, country, referer
     } = view as any;
     try {
         const exists = await existsView(viewId);
@@ -19,25 +19,45 @@ export default async function onAddView(view: any) {
             return false;
         }
         view.isShown = true;
-        await setView(view);
-        const todo = [
-            incTotalViews(blogId)
+        setView(view).then();
+
+        const transactions: any[] = [
+            ["incr", `live:blog:${blogId}:count:total`]
         ];
         if (mobile) {
-            todo.push(incMobileViews(blogId));
-        } else {
-            todo.push(incDesktopViews(blogId));
+            transactions.push(["incr", `live:blog:${blogId}:count:mobile`]);
         }
         if (url) {
-            todo.push(incUrl(blogId, url));
+            transactions.push(["zincrby", `live:blog:${blogId}:urls`, 1, url]);
         }
         if (country) {
-            todo.push(incCountry(blogId, country));
+            transactions.push(["zincrby", `live:blog:${blogId}:countries`, 1, country]);
         }
         if (referer) {
-            todo.push(incReferer(blogId, referer));
+            transactions.push(["zincrby", `live:blog:${blogId}:referers`, 1, referer]);
         }
-        await Promise.all(todo);
+        cache.multi(transactions).exec(function (err, replies) {
+            console.log('transactions redis multi callback', err);
+            console.log(replies);
+        });
+
+        // const todo: any[] = [];
+        // if (blogId) {
+        //     todo.push(incTotalViews(blogId));
+        // }
+        // if (mobile) {
+        //     todo.push(incMobileViews(blogId));
+        // }
+        // if (url) {
+        //     todo.push(incUrl(blogId, url));
+        // }
+        // if (country) {
+        //     todo.push(incCountry(blogId, country));
+        // }
+        // if (referer) {
+        //     todo.push(incReferer(blogId, referer));
+        // }
+        // await Promise.all(todo);
         return true;
     } catch (e) {
         console.error('>> redis error onAddView', e);

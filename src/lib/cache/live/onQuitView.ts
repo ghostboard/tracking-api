@@ -3,9 +3,9 @@ import decCountry from './decCountry'
 import decReferer from './decReferer'
 import decUrl from './decUrl'
 import decMobileViews from './decMobileViews'
-import decDesktopViews from './decDesktopViews'
 import decTotalViews from './decTotalViews'
 import deleteView from './deleteView'
+import { client as cache } from '../../../sources/redis'
 
 export default async function onQuitView(viewId: string) {
     try {
@@ -19,25 +19,45 @@ export default async function onQuitView(viewId: string) {
         }
         const { url, country, referer, mobile } = view
         const blogId = view.blog;
-        const todo = [
-            decTotalViews(blogId)
+        const transactions: any[] = [
+            ["decr", `live:blog:${blogId}:count:total`]
         ];
         if (mobile) {
-            todo.push(decMobileViews(blogId));
-        } else {
-            todo.push(decDesktopViews(blogId));
+            transactions.push(["decr", `live:blog:${blogId}:count:mobile`]);
         }
         if (url) {
-            todo.push(decUrl(blogId, url));
+            transactions.push(["zincrby", `live:blog:${blogId}:urls`, -1, url]);
         }
         if (country) {
-            todo.push(decCountry(blogId, country));
+            transactions.push(["zincrby", `live:blog:${blogId}:countries`, -1, country]);
         }
         if (referer) {
-            todo.push(decReferer(blogId, referer));
+            transactions.push(["zincrby", `live:blog:${blogId}:referers`, -1, referer]);
         }
-        await Promise.all(todo);
-        await deleteView(viewId)
+        transactions.push(["del", `live:view:${viewId}`]);
+        transactions.push(["del", `view:${viewId}`]);
+        cache.multi(transactions).exec(function (err, replies) {
+            console.log('onQuit transactions redis multi callback', err);
+            console.log(replies);
+        });
+        // const todo: any[] = [];
+        // if (blogId) {
+        //     todo.push(decTotalViews(blogId));
+        // }
+        // if (mobile) {
+        //     todo.push(decMobileViews(blogId));
+        // }
+        // if (url) {
+        //     todo.push(decUrl(blogId, url));
+        // }
+        // if (country) {
+        //     todo.push(decCountry(blogId, country));
+        // }
+        // if (referer) {
+        //     todo.push(decReferer(blogId, referer));
+        // }
+        // await Promise.all(todo);
+        // await deleteView(viewId)
         return true;
     } catch (e) {
         console.error('>> redis error onQuitView', e);

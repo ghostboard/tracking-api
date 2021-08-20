@@ -1,7 +1,7 @@
 import { client as cache } from '../../../sources/redis'
 
-const HOURS = 2;
-const EXPIRATION = HOURS * 60 * 60;
+const MINUTES = 5;
+const EXPIRATION = MINUTES * 60;
 
 export default async function setView(liveView: object) {
     const viewId = (liveView as any).visit;

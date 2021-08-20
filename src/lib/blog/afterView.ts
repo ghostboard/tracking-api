@@ -47,12 +47,8 @@ export default async function afterView(params: any, req: FastifyRequest) {
     if (body.V) {
         update.trackVersion = body.V;
     }
-    const options = {
-        new: true
-    };
-    return await db.Blog.findByIdAndUpdate(
-        params.visit.blog,
-        update,
-        options
-    );
+    const query = {
+        _id: params.visit.blog
+    }
+    return db.Blog.updateOne(query, update)
 }

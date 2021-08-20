@@ -3,7 +3,7 @@ import serveTransparentGif from "../../../lib/server/serveTransparentGif"
 import create from "../../../logic/click/create"
 
 export const method = 'GET'
-export const url = '/:blogId/c.gif'
+export const url = '/click/:blogId/report.gif'
 export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
     const urlParams = (req.params as any)
     const queryParams = (req.query as any)

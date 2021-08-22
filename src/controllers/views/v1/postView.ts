@@ -1,7 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
 import moment from "moment"
 import db from '../../../models'
-import { socketio } from '../../../sources/socketio'
 import FEATURES_FLAGS from '../../../config/features'
 import getBlogFilters from "../../../lib/cache/getBlogFilters"
 import getBlogForVisits from "../../../lib/cache/getBlogForVisits"
@@ -136,8 +135,8 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
 
         await Promise.all([
             afterView(viewParams, req),
-            emitSetup(viewParams, socketio),
-            emitDashboard(viewParams, socketio)
+            emitSetup(blogId),
+            emitDashboard(blogId)
         ]);
     } catch (e) {
         console.error('Error postView ', e);

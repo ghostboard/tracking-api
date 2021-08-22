@@ -1,22 +1,12 @@
-import db from '../../models'
+import { socketio } from '../../sources/socketio'
+import getSocketList from '../../services/socket/getSocketList'
 
-export default async function emitDashboard(params, io) {
-    const query = {
-        space: "/dashboard",
-        $or: [
-            { userId: params.blog.user },
-            { blogId: params.blog._id.toString() }
-        ]
-    };
-    const sockets = await db.Socket.find(query).lean();
-    sockets.forEach((socket) => {
-        const socketId = socket && socket.socketId;
-        const mustEmitSetup = socketId && io;
-        if (mustEmitSetup) {
-            io.of("/dashboard")
-                .to(socketId)
-                .emit("update", true);
-        }
-    });
-    return true;
+export default async function emitDashboard(blogId: string) {
+    const sockets: string[] = await getSocketList('dashboard', blogId)
+    console.log('>> getSocketList dashboard', blogId)
+    console.log('>> list', sockets)
+    sockets.forEach((socketId) => {
+        socketio.of("/dashboard").to(socketId).emit("update", true)
+    })
+    return true
 }

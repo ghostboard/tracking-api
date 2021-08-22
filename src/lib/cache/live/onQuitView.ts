@@ -36,10 +36,7 @@ export default async function onQuitView(viewId: string) {
         }
         transactions.push(["del", `live:view:${viewId}`]);
         transactions.push(["del", `view:${viewId}`]);
-        cache.multi(transactions).exec(function (err, replies) {
-            console.log('onQuit transactions redis multi callback', err);
-            console.log(replies);
-        });
+        cache.multi(transactions).exec();
         // const todo: any[] = [];
         // if (blogId) {
         //     todo.push(decTotalViews(blogId));

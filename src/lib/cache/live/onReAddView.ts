@@ -24,9 +24,10 @@ export default async function onReAddView(viewId: string) {
         const blogId = view.blog;
         view.isShown = true;
         setView(view).then()
-        const transactions: any[] = [
-            ["incr", `live:blog:${blogId}:count:total`]
-        ];
+        const transactions: any[] = [];
+        if (blogId) {
+            transactions.push(["incr", `live:blog:${blogId}:count:total`]);
+        }
         if (mobile) {
             transactions.push(["incr", `live:blog:${blogId}:count:mobile`]);
         }
@@ -40,7 +41,7 @@ export default async function onReAddView(viewId: string) {
             transactions.push(["zincrby", `live:blog:${blogId}:referers`, 1, referer]);
         }
         cache.multi(transactions).exec(function (err, replies) {
-            console.log('transactions redis multi callback', err);
+            console.log('reAdd transactions redis multi callback', err);
             console.log(replies);
         });
         // const todo: any[] = [];

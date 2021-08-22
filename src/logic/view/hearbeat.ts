@@ -1,10 +1,11 @@
 import moment from "moment"
 import mongoose from "mongoose"
 import db from '../../models'
-import { socketio } from '../../sources/socketio'
 import FEATURES_FLAGS from '../../config/features'
+import getView from "../../lib/cache/getView"
 import onReAddView from "../../lib/cache/live/onReAddView"
 import onQuitView from "../../lib/cache/live/onQuitView"
+import emitDashboard from "../../lib/socket/emitDashboard"
 import isMobile from "../../lib/views/isMobile"
 import isTablet from "../../lib/views/isTablet"
 
@@ -14,6 +15,17 @@ export default async function heartbeat(viewId: string, time: number, event: str
         return { code: 401, message: 'Invalid viewId' }
     }
 
+    let viewData = await getView(viewId)
+    let visit = JSON.parse(viewData)
+    if (typeof visit === 'string') {
+        visit = JSON.parse(visit)
+    }
+
+    const blogId = visit && visit.blog;
+    if (blogId) {
+        emitDashboard(blogId).then()
+    }
+    
     const query = {
         _id: viewId
     };
@@ -54,7 +66,8 @@ export default async function heartbeat(viewId: string, time: number, event: str
             onReAddView(viewId).then();
         }
     }
-    const visit = await db.Visit.findById(viewId).populate("blog").lean()
+
+    // const visit = await db.Visit.findById(viewId).populate("blog").lean()
     const haveTime = visit && visit.created;
     const timeDiff = haveTime ? now.diff(moment(visit.created), 'seconds') : false;
     const fixTime = haveTime && update.time > timeDiff;
@@ -74,25 +87,6 @@ export default async function heartbeat(viewId: string, time: number, event: str
             newHeartbeat.triggerBy = event;
         }
         db.LogHeartbeat.create(newHeartbeat);
-    }
-
-    const visitFound = visit && visit.blog;
-    if (visitFound) {
-        const query = {
-            space: "/dashboard",
-            $or: [
-                { userId: visit.blog.user },
-                { blogId: visit.blog._id.toString() }
-            ]
-        };
-        const sockets = await db.Socket.find(query).lean()
-        sockets.forEach((socket) => {
-            const socketId = socket && socket.socketId;
-            const mustEmitSetup = socketId && socketio;
-            if (mustEmitSetup) {
-                socketio.of("/dashboard").to(socketId).emit("update", true);
-            }
-        });
     }
 
     return true

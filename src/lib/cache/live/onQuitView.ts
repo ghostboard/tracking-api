@@ -19,9 +19,10 @@ export default async function onQuitView(viewId: string) {
         }
         const { url, country, referer, mobile } = view
         const blogId = view.blog;
-        const transactions: any[] = [
-            ["decr", `live:blog:${blogId}:count:total`]
-        ];
+        const transactions: any[] = [];
+        if (blogId) {
+            transactions.push(["decr", `live:blog:${blogId}:count:total`]);
+        }
         if (mobile) {
             transactions.push(["decr", `live:blog:${blogId}:count:mobile`]);
         }

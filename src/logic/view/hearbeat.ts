@@ -2,7 +2,7 @@ import moment from "moment"
 import mongoose from "mongoose"
 import db from '../../models'
 import FEATURES_FLAGS from '../../config/features'
-import getView from "../../lib/cache/getView"
+import getView from "../../lib/cache/live/getView"
 import onReAddView from "../../lib/cache/live/onReAddView"
 import onQuitView from "../../lib/cache/live/onQuitView"
 import emitDashboard from "../../lib/socket/emitDashboard"
@@ -25,7 +25,7 @@ export default async function heartbeat(viewId: string, time: number, event: str
     if (blogId) {
         emitDashboard(blogId).then()
     }
-    
+
     const query = {
         _id: viewId
     };

@@ -14,6 +14,7 @@ const start = async () => {
         fastify.register(require('fastify-cors'), { origin: '*' })
         fastify.register(require('fastify-helmet'))
         fastify.register(require('fastify-no-icon'))
+        fastify.register(require('fastify-formbody'))
         fastify.register(require('./sources/mongodb'))
         fastify.register(require('./sources/redis'))
         fastify.register(require('./sources/socketio'))

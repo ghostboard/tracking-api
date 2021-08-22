@@ -121,23 +121,27 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         viewParams.visit = visit;
 
         // Save post's first visit if proceed
-        const firstPostVisit = viewParams.post && viewParams.post._id && !viewParams.post.firstVisit;
+        const firstPostVisit = post && post._id && !post.firstVisit;
         if (firstPostVisit) {
             const query = {
-                _id: viewParams.postId,
+                _id: post._id,
                 firstVisit: { $exists: false }
             };
             const update = {
-                firstVisit: (viewParams.visit as any).created
+                firstVisit: visit.created
             };
             db.Post.updateOne(query, update).exec();
         }
 
-        await Promise.all([
+        const todoAfterPost = [
             afterView(viewParams, req),
-            emitSetup(blogId),
             emitDashboard(blogId)
-        ]);
+        ]
+        const shouldEmitSetup = blog && !blog.firstVisit
+        if (shouldEmitSetup) {
+            todoAfterPost.push(emitSetup(blogId))
+        }
+        await Promise.all(todoAfterPost);
     } catch (e) {
         console.error('Error postView ', e);
     }

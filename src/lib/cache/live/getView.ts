@@ -1,6 +1,6 @@
 import { client as cache } from '../../../sources/redis'
 
-export default async function getView(viewId: string) :Promise<string> {
+export default async function getView(viewId: string) :Promise<any> {
     const key = `live:view:${viewId}`;
     
     return new Promise((resolve, reject) => {
@@ -9,7 +9,11 @@ export default async function getView(viewId: string) :Promise<string> {
                 return reject(err);
             }
             if (item) {
-                return resolve(JSON.stringify(item));
+                let data = JSON.parse(item)
+                if (typeof data === 'string') {
+                    data = JSON.parse(data)
+                }
+                return resolve(data);
             }
             resolve('');
         });

@@ -10,7 +10,11 @@ export default async function getBlogForVisits(blogId: string) :Promise<any> {
                 return reject(err);
             }
             if (item) {
-                return resolve(JSON.parse(item));
+                let data = JSON.parse(item)
+                if (typeof data === 'string') {
+                    data = JSON.parse(data)
+                }
+                return resolve(data);
             }
             const select = 'url domain enableClient firstVisit filterOwnIP filterTeamIP user active';
             const query = {

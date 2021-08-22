@@ -15,17 +15,12 @@ export default async function heartbeat(viewId: string, time: number, event: str
         return { code: 401, message: 'Invalid viewId' }
     }
 
-    let viewData = await getView(viewId)
-    let visit = JSON.parse(viewData)
-    if (typeof visit === 'string') {
-        visit = JSON.parse(visit)
+    let visit: any = await getView(viewId)
+    if (!visit) {
+        return false
     }
 
     const blogId = visit && visit.blog;
-    if (blogId) {
-        emitDashboard(blogId).then()
-    }
-
     const query = {
         _id: viewId
     };
@@ -37,6 +32,14 @@ export default async function heartbeat(viewId: string, time: number, event: str
     const update: any = {
         time
     };
+    const haveTime = visit && visit.created;
+    const timeDiff = haveTime ? now.diff(moment(visit.created), 'seconds') : false;
+    const fixTime = haveTime && update.time > timeDiff;
+    if (fixTime) {
+        update.time = timeDiff;
+    }
+    db.Visit.updateOne(query, update).exec();
+
     if (event) {
         const useragentIsMobile = isMobile(useragent);
         const useragentIsTablet = isTablet(useragent);
@@ -52,7 +55,7 @@ export default async function heartbeat(viewId: string, time: number, event: str
         const isOffline = exitEvents.indexOf(event) !== -1;
         if (isOffline) {
             db.Live.updateOne({ visit: viewId }, { exit: new Date() }).exec();
-            onQuitView(viewId).then();
+            onQuitView(viewId).then((done) => done && emitDashboard(blogId)).then();
         }
         const isReading =
             [
@@ -63,18 +66,9 @@ export default async function heartbeat(viewId: string, time: number, event: str
             ].indexOf(event) !== -1;
         if (isReading) {
             db.Live.updateOne({ visit: viewId }, { exit: null }).exec();
-            onReAddView(viewId).then();
+            onReAddView(viewId).then((done) => done && emitDashboard(blogId)).then();
         }
     }
-
-    // const visit = await db.Visit.findById(viewId).populate("blog").lean()
-    const haveTime = visit && visit.created;
-    const timeDiff = haveTime ? now.diff(moment(visit.created), 'seconds') : false;
-    const fixTime = haveTime && update.time > timeDiff;
-    if (fixTime) {
-        update.time = timeDiff;
-    }
-    db.Visit.updateOne(query, update).exec();
 
     if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {
         const newHeartbeat: any = {

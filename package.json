@@ -7,7 +7,9 @@
     "ts": "rm -rf build && tsc -w",
     "dev": "nodemon build/server.js",
     "start": "node build/server.js",
-    "deploy": "eb deploy --timeout 20 --profile ghostboard"
+    "deploy": "eb deploy --timeout 20 --profile ghostboard",
+    "vl": "eb appversion --profile ghostboard",
+    "rollback": "eb deploy -l <version-label> --profile ghostboard"
   },
   "repository": {
     "type": "git",

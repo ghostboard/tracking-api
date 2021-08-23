@@ -2,6 +2,7 @@ import { client as cache } from '../../../sources/redis'
 
 export default async function deleteView(viewId: string) {
     const key = `live:view:${viewId}`;
+    const keyCopy = `live:view:copy:${viewId}`;
     const dataKey = `view:${viewId}`;
     
     return new Promise((resolve, reject) => {
@@ -9,6 +10,7 @@ export default async function deleteView(viewId: string) {
             if (err) {
                 return reject(err);
             }
+            cache.del(keyCopy)
             cache.del(dataKey)
             resolve(out);
         });

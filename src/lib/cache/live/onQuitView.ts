@@ -25,6 +25,7 @@ export default async function onQuitView(viewId: string) {
                 transactions.push(["zincrby", `live:blog:${blogId}:referers`, -1, referer])
             }
             transactions.push(["del", `live:view:${viewId}`])
+            transactions.push(["del", `live:view:copy:${viewId}`])
             transactions.push(["del", `view:${viewId}`])
             cache.multi(transactions).exec()
             return true

@@ -1,5 +1,6 @@
-import getView from './getView'
 import { client as cache } from '../../../sources/redis'
+import getView from './getView'
+import getCountTotalViews from './getCountTotalViews'
 
 export default async function onQuitView(viewId: string) {
     try {
@@ -11,7 +12,12 @@ export default async function onQuitView(viewId: string) {
         const blogId = view.blog;
         const transactions: any[] = [];
         if (blogId) {
-            transactions.push(["decr", `live:blog:${blogId}:count:total`])
+            const totalViews = await getCountTotalViews(blogId)
+            if (totalViews > 0) {
+                transactions.push(["decr", `live:blog:${blogId}:count:total`])
+            } else if (totalViews < 0) {
+                transactions.push(["set", `live:blog:${blogId}:count:total`, '0'])
+            }
             if (mobile) {
                 transactions.push(["decr", `live:blog:${blogId}:count:mobile`])
             }

@@ -1,6 +1,6 @@
 import { client as cache } from '../../../sources/redis'
 
-export default async function existsView(viewId: string) :Promise<Boolean>{
+export default async function existsView(viewId: string) :Promise<boolean>{
     const key = `live:view:${viewId}`;
     
     return new Promise((resolve, reject) => {

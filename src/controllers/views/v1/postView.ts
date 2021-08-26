@@ -26,7 +26,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             return res.code(401).send(false);
         }
         if (useragent && isBot(useragent)) {
-            return res.code(200).send(false);
+            return res.code(204).send(false);
         }
         const referer = req.headers["referer"] || ''
         let path = referer
@@ -40,21 +40,21 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         }
         const slug = getSlug(blog, path);
         if (isPreview(slug)) {
-            return res.code(200).send(false);
+            return res.code(204).send(false);
         }
         const enabled = blog && blog.enableClient !== false;
         if (!enabled) {
-            return res.code(403).send({ message: "Please reactive your blog on Ghostboard" });
+            return res.code(204).send({ message: "Please reactive your blog on Ghostboard" });
         }
         const dontMatchDomain = blog.domain && referer && referer.indexOf(blog.domain) === -1;
         const isGhostPro = referer && referer.includes('.ghost.io');
         const isWrong = dontMatchDomain && !isGhostPro;
         if (isWrong) {
-            return res.code(403).send({ message: `Not allowed to track from ${referer}` });
+            return res.code(204).send({ message: `Not allowed to track from ${referer}` });
         }
         const blockIP = ipFilters.includes(userIP);
         if (blockIP) {
-            return res.code(200).send(false);
+            return res.code(204).send(false);
         }
 
         const pathWithoutQuery = body.U || referer;

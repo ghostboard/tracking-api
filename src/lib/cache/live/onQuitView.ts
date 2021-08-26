@@ -16,7 +16,7 @@ export default async function onQuitView(viewId: string) {
             if (totalViews > 0) {
                 transactions.push(["decr", `live:blog:${blogId}:count:total`])
             } else if (totalViews < 0) {
-                transactions.push(["incr", `live:blog:${blogId}:count:total`, totalViews*-1])
+                transactions.push(["incrby", `live:blog:${blogId}:count:total`, totalViews*-1])
             }
             if (mobile) {
                 transactions.push(["decr", `live:blog:${blogId}:count:mobile`])

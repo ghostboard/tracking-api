@@ -100,7 +100,6 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             newLive.refererDomain = visit.refererDomain;
             newLive.hasRefererIcon = visit.hasRefererIcon;
         }
-        db.Live.create(newLive);
         onAddView(newLive).then();
 
         if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {

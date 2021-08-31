@@ -2,7 +2,7 @@ import moment from 'moment'
 import UAParser from 'ua-parser-js'
 import querystring from 'querystring'
 import urlParser from 'url'
-import geoip from 'geoip-country'
+import geoip from 'geoip-lite'
 import { FastifyRequest } from "fastify"
 import db from '../../models'
 import isEmail from "./isEmail"

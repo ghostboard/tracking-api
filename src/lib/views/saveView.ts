@@ -2,7 +2,7 @@ import moment from 'moment'
 import UAParser from 'ua-parser-js'
 import querystring from 'querystring'
 import urlParser from 'url'
-import geoip from 'geoip-lite'
+import turboGeoip from 'turbo-geoip-country'
 import { FastifyRequest } from "fastify"
 import db from '../../models'
 import isEmail from "./isEmail"
@@ -12,12 +12,12 @@ import anonymIP from "./anonymIP"
 import getRefererMetadata from "./getRefererMetadata"
 
 export default async function saveView(params: any, req: FastifyRequest): Promise<string[]> {
-    const visitIP = req.ip;
-    const geoipData = geoip.lookup(visitIP);
     const useragent = req.headers["user-agent"];
+    const ip = req.ip
     const useragentIsMobile = isMobile(useragent);
     const useragentIsTablet = isTablet(useragent);
     const UAData = UAParser(useragent);
+    const country = turboGeoip.getCountry(ip)
     let fullURL = (req.body as any).U || req.headers["referer"];
     if (!fullURL) {
         fullURL = params.blog.url;
@@ -37,9 +37,9 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
         tablet: useragentIsTablet,
         desktop: !useragentIsMobile && !useragentIsTablet,
         lang: params.lang,
-        country: geoipData && geoipData.country ? geoipData.country : null,
+        country,
         time: 0,
-        ip: anonymIP(visitIP),
+        ip: anonymIP(ip),
         created: moment().toDate()
     };
     if (params.isNoscript) {

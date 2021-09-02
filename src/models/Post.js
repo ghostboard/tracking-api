@@ -62,6 +62,9 @@ const postSchema = new mongoose.Schema({
   flagCronUpdated: {
     type: Date
   },
+  synced: {
+    type: Date
+  },
   updated: {
     type: Date
   },

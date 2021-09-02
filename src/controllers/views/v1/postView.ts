@@ -84,7 +84,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         res.code(200).send(visit._id);
 
         const newLive: any = {
-            blog: blog._id.toString(),
+            blog: blogId,
             visit: visit._id.toString(),
             url: visit.url,
             slug: visit.slug,

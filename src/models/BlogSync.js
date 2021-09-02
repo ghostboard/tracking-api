@@ -72,6 +72,9 @@ const blogSyncSchema = new mongoose.Schema({
   },
   error: {
     type: String
+  },
+  lastPostUpdated: {
+    type: Date
   }
 }, {
   collection: 'blog_sync'

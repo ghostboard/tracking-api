@@ -1,8 +1,8 @@
 .DS_Store
 .tmp
 .env
-/build/
-/node_modules
+build/
+node_modules/
 *.log
 
 # Elastic Beanstalk Files

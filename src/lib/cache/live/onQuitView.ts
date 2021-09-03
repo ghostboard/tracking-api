@@ -26,14 +26,14 @@ export default async function onQuitView(viewId: string) {
                 !!country,
                 !!referer
             ]
-            const calls: any = [
+            const promises: any = [
                 getCountTotalViews(blogId), 
                 getMobileCount(blogId),
                 getUrl(blogId, url),
                 getCountry(blogId, country),
                 getReferer(blogId, referer),
             ]
-            const results = conditions.map((c, i) => c ? calls[i]() : Promise.resolve(false))
+            const results = conditions.map((c, i) => c ? promises[i] : Promise.resolve(false))
             const [
                 totalViews,
                 mobileCount,
@@ -73,7 +73,6 @@ export default async function onQuitView(viewId: string) {
             }
 
             if (referer) {
-                transactions.push(["zincrby", `live:blog:${blogId}:referers`, -1, referer])
                 if (refererCount > 0) {
                     transactions.push(["zincrby", `live:blog:${blogId}:referers`, -1, referer])
                 } else if (refererCount < 0) {

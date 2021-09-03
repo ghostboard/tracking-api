@@ -56,26 +56,29 @@ export default async function onQuitView(viewId: string) {
                 }
             }
 
-            if (url) {
+            const hasUrl = url && urlCount !== false
+            if (hasUrl) {
                 if (urlCount > 0) {
                     transactions.push(["zincrby", `live:blog:${blogId}:urls`, -1, url])
-                } else if (urlCount < 0) {
+                } else {
                     deleteUrl(blogId, url).then()
                 }
             }
 
-            if (country) {
+            const hasCountry = country && countryCount !== false
+            if (hasCountry) {
                 if (countryCount > 0) {
                     transactions.push(["zincrby", `live:blog:${blogId}:countries`, -1, country])
-                } else if (countryCount < 0) {
+                } else {
                     deleteCountry(blogId, country).then()
                 }
             }
 
-            if (referer) {
+            const hasReferer = referer && refererCount !== false
+            if (hasReferer) {
                 if (refererCount > 0) {
                     transactions.push(["zincrby", `live:blog:${blogId}:referers`, -1, referer])
-                } else if (refererCount < 0) {
+                } else {
                     deleteReferer(blogId, referer).then()
                 }
             }

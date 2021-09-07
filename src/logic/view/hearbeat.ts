@@ -52,20 +52,20 @@ export default async function heartbeat(viewId: string, time: number, event: str
             exitEvents.push('visibilityState:hidden');
         }
 
-        const isOffline = exitEvents.indexOf(event) !== -1;
+        const isOffline = exitEvents.includes(event);
         if (isOffline) {
-            onQuitView(viewId).then((done) => done && emitDashboard(blogId)).then();
+            onQuitView(blogId, viewId).then((done) => done && emitDashboard(blogId)).then();
         }
-        const isReading =
-            [
-                "focus",
-                "focusin",
-                "pageshow",
-                "visibilityState:visible"
-            ].indexOf(event) !== -1;
-        if (isReading) {
-            onReAddView(viewId).then((done) => done && emitDashboard(blogId)).then();
-        }
+        // const isReading =
+        //     [
+        //         "focus",
+        //         "focusin",
+        //         "pageshow",
+        //         "visibilityState:visible"
+        //     ].includes(event);
+        // if (isReading) {
+        //     onReAddView(viewId).then((done) => done && emitDashboard(blogId)).then();
+        // }
     }
 
     if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {

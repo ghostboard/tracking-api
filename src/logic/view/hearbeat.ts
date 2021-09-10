@@ -46,7 +46,6 @@ export default async function heartbeat(viewId: string, time: number, event: str
     if (event) {
         const mobileExitEvents = VIEWS_CONFIG.exitEvents.mobile
         const desktopExitEvents = VIEWS_CONFIG.exitEvents.desktop
-        const readingEvents = VIEWS_CONFIG.readingEvents
         const useragentIsMobile = isMobile(useragent)
         const useragentIsTablet = isTablet(useragent)
         const isDesktop = !useragentIsMobile && !useragentIsTablet
@@ -54,12 +53,6 @@ export default async function heartbeat(viewId: string, time: number, event: str
         const isOffline = exitEvents.includes(event)
         if (isOffline) {
             onQuitView(blogId, viewId).then((done) => done && emitDashboard(blogId)).then();
-        } else {
-            const isReading = readingEvents.includes(event)
-            const proceedReAdd = !isDesktop && isReading
-            if (proceedReAdd) {
-                onReAddView(blogId, viewId).then((done) => done && emitDashboard(blogId)).then();
-            }
         }
     }
 

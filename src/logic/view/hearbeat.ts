@@ -1,14 +1,11 @@
 import moment from "moment"
 import mongoose from "mongoose"
 import db from '../../models'
-import FEATURES_FLAGS from '../../config/features'
 import VIEWS_CONFIG from '../../config/views'
 import getView from "../../lib/cache/live/getView"
-import onReAddView from "../../lib/cache/live/onReAddView"
 import onQuitView from "../../lib/cache/live/onQuitView"
 import emitDashboard from "../../lib/socket/emitDashboard"
-import isMobile from "../../lib/views/isMobile"
-import isTablet from "../../lib/views/isTablet"
+import isDesktop from "../../lib/views/isDesktop"
 
 export default async function heartbeat(viewId: string, time: number, event: string, useragent: string): Promise<any> {
     const isValidId = mongoose.Types.ObjectId.isValid(viewId)
@@ -46,27 +43,12 @@ export default async function heartbeat(viewId: string, time: number, event: str
     if (event) {
         const mobileExitEvents = VIEWS_CONFIG.exitEvents.mobile
         const desktopExitEvents = VIEWS_CONFIG.exitEvents.desktop
-        const useragentIsMobile = isMobile(useragent)
-        const useragentIsTablet = isTablet(useragent)
-        const isDesktop = !useragentIsMobile && !useragentIsTablet
-        const exitEvents = isDesktop ? desktopExitEvents : mobileExitEvents
+        const isUADesktop = isDesktop(useragent)
+        const exitEvents = isUADesktop ? desktopExitEvents : mobileExitEvents
         const isOffline = exitEvents.includes(event)
         if (isOffline) {
             onQuitView(blogId, viewId).then((done) => done && emitDashboard(blogId)).then();
         }
-    }
-
-    if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {
-        const newHeartbeat: any = {
-            visit: viewId,
-            useragent,
-            time,
-            created: moment().toDate()
-        };
-        if (event) {
-            newHeartbeat.triggerBy = event;
-        }
-        db.LogHeartbeat.create(newHeartbeat);
     }
 
     return true

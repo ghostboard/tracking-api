@@ -102,21 +102,6 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         }
         onAddView(newLive).then();
 
-        if (FEATURES_FLAGS.VIEW_HEARTBEAT_LOG) {
-            const newHeartbeat: any = {
-                visit: visit._id,
-                url: referer,
-                useragent,
-                time: 0,
-                ip: req.ip,
-                created: moment().toDate()
-            };
-            if (body.G) {
-                newHeartbeat.triggerBy = body.G;
-            }
-            db.LogHeartbeat.create(newHeartbeat);
-        }
-
         viewParams.visit = visit;
 
         // Save post's first visit if proceed

@@ -1,7 +1,9 @@
 {
+  "exclude": [
+    "jest.config.js"
+  ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
     "outDir": "./build", /* Redirect output structure to the directory. */
     /* Basic Options */
     // "incremental": true,                         /* Enable incremental compilation */

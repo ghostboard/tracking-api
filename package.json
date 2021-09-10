@@ -8,6 +8,7 @@
     "dev": "nodemon build/server.js",
     "start": "node build/server.js",
     "deploy": "eb deploy --timeout 20 --profile ghostboard",
+    "bad": "npm run build && npm run deploy",
     "vl": "eb appversion --profile ghostboard",
     "rollback": "eb deploy -l <version-label> --profile ghostboard"
   },

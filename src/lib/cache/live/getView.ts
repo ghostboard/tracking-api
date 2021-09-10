@@ -1,7 +1,7 @@
 import { client as cache } from '../../../sources/redis'
 
 export default async function getView(viewId: string) :Promise<any> {
-    const key = `live:view:${viewId}`;
+    const key = `view:${viewId}`;
     
     return new Promise((resolve, reject) => {
         cache.get(key, async(err, item) => {

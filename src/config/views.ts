@@ -19,5 +19,15 @@ export default {
             '//webmail',
             'webmail.'
         ]
+    },
+    readingEvents: [
+        "focus",
+        "focusin",
+        "pageshow",
+        "visibilityState:visible"
+    ],
+    exitEvents: {
+        desktop: ["beforeunload", "unload"],
+        mobile: ["beforeunload", "unload", "blur", "focusout", "pagehide", "visibilityState:hidden"]
     }
 }

@@ -1,9 +1,9 @@
 import { FastifyReply } from "fastify"
 
-export default function(reply: FastifyReply) :FastifyReply {
-    const buf = Buffer.alloc(43)
-    const transparentGif = "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
-    buf.write(transparentGif, "base64")
+const buffer = Buffer.alloc(43)
+const transparentGif = "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+buffer.write(transparentGif, "base64")
 
-    return reply.code(200).type('image/gif').send(buf)
+export default function(reply: FastifyReply) :FastifyReply {
+    return reply.code(200).type('image/gif').send(buffer)
 }

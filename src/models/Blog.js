@@ -88,6 +88,14 @@ const blogSchema = new mongoose.Schema({
     default: false,
     index: true
   },
+  removedAt: {
+    type: Date,
+    index: true
+  },
+  hidden: {
+    type: Boolean,
+    index: true
+  },
   cancelledAt: {
     type: Date,
     index: true

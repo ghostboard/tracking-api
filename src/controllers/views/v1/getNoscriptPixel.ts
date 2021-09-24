@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
-import serveTransparentGif from "../../../lib/server/serveTransparentGif"
 import getBlogFilters from "../../../lib/cache/getBlogFilters"
 import getBlogForVisits from "../../../lib/cache/getBlogForVisits"
 import getPostBySlug from "../../../lib/cache/getPostBySlug"
@@ -11,10 +10,10 @@ import saveView from "../../../lib/views/saveView"
 export const method = 'GET'
 export const url = '/noscript/:id/pixel.gif'
 
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
+export async function handler(req: FastifyRequest, res: FastifyReply): Promise<number> {
     const path = req.headers["referer"]
     if (!path) {
-        return serveTransparentGif(res);
+        return 0
     }
     const params: { [index: string]: any } = (req.params as object);
     const hasBlogId = params && params.id;
@@ -80,7 +79,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         isNoscript: true
     };
     await saveView(visitParams, req);
-    return serveTransparentGif(res);
+    return 1
 }
 
 export default function (fastify: FastifyInstance) {

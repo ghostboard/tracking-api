@@ -12,7 +12,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     const useragent = req.headers["user-agent"] || ''
     const referer = req.headers["referer"] || ''
     const out = await report(blogId, location, error, useragent, referer)
-    return 1
+    return res.code(200).send(1)
 }
 
 export default function (fastify: FastifyInstance) {

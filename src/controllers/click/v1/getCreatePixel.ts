@@ -3,7 +3,7 @@ import create from "../../../logic/click/create"
 
 export const method = 'GET'
 export const url = '/:blogId/c.gif'
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<number> {
+export async function handler(req: FastifyRequest, reply: FastifyReply): Promise<number> {
     const urlParams = (req.params as any)
     const queryParams = (req.query as any)
     const { blogId } = urlParams
@@ -15,7 +15,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     } = queryParams
     const origin = req.headers["referer"] || ''
     const out = await create(blogId, origin, target, title, text, image)
-    return 1
+    return reply.code(200).send(1)
 }
 
 export default function (fastify: FastifyInstance) {

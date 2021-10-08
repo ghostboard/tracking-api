@@ -18,11 +18,11 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     const params: { [index: string]: any } = (req.params as object);
     const hasBlogId = params && params.id;
     if (!hasBlogId) {
-        return res.code(401).send(false);
+        return res.code(401).send(0);
     }
     const useragent = req.headers["user-agent"]
     if (useragent && isBot(useragent)) {
-        return res.code(200).send(false);
+        return res.code(200).send(0);
     }
     const blogId = params.id
     const userIp = req.ip
@@ -35,7 +35,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     }
     const slug = getSlug(blog, path)
     if (isPreview(slug)) {
-        return res.code(200).send(false);
+        return res.code(200).send(0);
     }
     const enabled = blog && (blog as any).enableClient !== false
     if (!enabled) {
@@ -51,7 +51,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     }
     const blockIP = ipFilters.includes(userIp)
     if (blockIP) {
-        return res.code(200).send(false)
+        return res.code(200).send(0)
     }
 
     const pathWithoutQuery = referer || ''

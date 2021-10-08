@@ -16,17 +16,17 @@ import emitSetup from "../../../lib/socket/emitSetup"
 
 export const method = 'POST'
 export const url = '/v1/views/:blogId'
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
+export async function handler(req: FastifyRequest, res: FastifyReply): Promise<number> {
     try {
         const params = (req.params as any)
         const body = (req.body as any)
         const { blogId } = params
         const useragent = req.headers["user-agent"]
         if (!blogId) {
-            return res.code(401).send(false);
+            return res.code(401).send(0);
         }
         if (useragent && isBot(useragent)) {
-            return res.code(204).send(false);
+            return res.code(204).send(0);
         }
         const referer = req.headers["referer"] || ''
         let path = referer
@@ -129,7 +129,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
     } catch (e) {
         console.error('Error postView ', e);
     }
-    return res
+    return 1
 }
 
 export default function (fastify: FastifyInstance) {

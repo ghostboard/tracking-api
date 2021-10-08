@@ -12,7 +12,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         try {
             body = JSON.parse(body);
         } catch (err) {
-            return res.code(401).send(false)
+            return res.code(401).send(0)
         }
     }
 
@@ -31,7 +31,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
     if (hasResponse) {
         return res.code(out.code).send(out.message || false)
     }
-    return res.code(200).send(true)
+    return res.code(200).send(1)
 }
 
 export default function (fastify: FastifyInstance) {

@@ -22,7 +22,7 @@ export default async function getBlogFilters(blogId: string) :Promise<string[]> 
             const filters = await db.BlogFilter.find(query).select('ip').lean();
             const ipList = filters.map((item: any) => item.ip);
             cache.setex(key, expiration, JSON.stringify(ipList));
-            resolve(filters);
+            resolve(ipList);
         });
     });
 }

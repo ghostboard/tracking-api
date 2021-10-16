@@ -18,7 +18,6 @@ const start = async () => {
         fastify.register(require('fastify-no-icon'))
         fastify.register(require('fastify-formbody'))
         fastify.register(require('fastify-jwt'), { secret: process.env.JWT_SECRET })
-        fastify.register(require('fastify-compress'))
         fastify.register(require('./sources/mongodb'))
         fastify.register(require('./sources/redis'))
         fastify.register(require('./sources/socketio'))

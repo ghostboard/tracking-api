@@ -61,13 +61,7 @@ const schema = new mongoose.Schema({
  * - virtuals
  */
 
-const indexes = {
-  blog: 1, post: 1, ts: 1,
-  doing: 1, priority: 1,
-  created: 1, completed: 1, 
-  error: 1
-};
-schema.index(indexes);
+schema.index({ blog: 1, doing: 1, completed: 1, priority: 1, ts: 1 });
 
 if (!schema.options.toObject) {
   schema.options.toObject = {};

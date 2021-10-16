@@ -23,10 +23,10 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
         const { blogId } = params
         const useragent = req.headers["user-agent"]
         if (!blogId) {
-            return res.code(401).send(0);
+            return res.code(401).send();
         }
         if (useragent && isBot(useragent)) {
-            return res.code(204).send(0);
+            return res.code(204).send();
         }
         const referer = req.headers["referer"] || ''
         let path = referer
@@ -40,7 +40,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
         }
         const slug = getSlug(blog, path);
         if (isPreview(slug)) {
-            return res.code(204).send(false);
+            return res.code(204).send();
         }
         const enabled = blog && blog.enableClient !== false;
         if (!enabled) {

@@ -8,6 +8,22 @@ const blogSyncSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  fetchingAuthors: {
+    type: Boolean,
+    default: false
+  },
+  fetchingTags: {
+    type: Boolean,
+    default: false
+  },
+  fetchingPosts: {
+    type: Boolean,
+    default: false
+  },
+  fetchingPages: {
+    type: Boolean,
+    default: false
+  },
   fetchingLinks: {
     type: Boolean,
     default: false

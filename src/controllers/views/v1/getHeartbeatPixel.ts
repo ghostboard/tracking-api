@@ -11,7 +11,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     let event = queryParams.e
     const useragent = req.headers["user-agent"] || ''
     const out = await heartbeat(viewId, time, event, useragent)
-    return res.code(200).send(1)
+    return res.code(200).send()
 }
 
 export default function (fastify: FastifyInstance) {

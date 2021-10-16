@@ -15,7 +15,7 @@ export async function handler(req: FastifyRequest, reply: FastifyReply): Promise
     } = queryParams
     const origin = req.headers["referer"] || ''
     const out = await create(blogId, origin, target, title, text, image)
-    return reply.code(200).send(1)
+    return reply.code(200).send()
 }
 
 export default function (fastify: FastifyInstance) {

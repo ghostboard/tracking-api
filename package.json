@@ -47,7 +47,7 @@
     "ua-parser-js": "^0.7.28"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.2",
+    "@types/jest": "^27.0.3",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^16.11.0",
     "@types/pino": "^6.3.11",

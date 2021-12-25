@@ -13,6 +13,9 @@ const fastify = Fastify({
 
 const start = async () => {
     try {
+        if (isProduction) {
+            require('@newrelic/fastify');
+        }
         fastify.register(require('fastify-cors'), { origin: '*' })
         fastify.register(require('fastify-helmet'), SECURITY_CONF.helmet)
         fastify.register(require('fastify-no-icon'))

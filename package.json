@@ -39,6 +39,7 @@
     "isbot": "^3.3.4",
     "moment": "^2.29.1",
     "mongoose": "^5.13.11",
+    "newrelic": "^8.6.0",
     "pino-pretty": "^7.1.0",
     "querystring": "^0.2.1",
     "redis": "^3.1.2",

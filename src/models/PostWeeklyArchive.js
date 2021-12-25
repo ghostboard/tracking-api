@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const postHourlyArchive = new mongoose.Schema(
+const postWeeklyArchive = new mongoose.Schema(
   {
     blog: {
       type: String,
@@ -17,6 +17,9 @@ const postHourlyArchive = new mongoose.Schema(
     },
     url: {
       type: String
+    },
+    avgDailyViews: {
+      type: Number
     },
     avgViewTime: {
       type: Number
@@ -56,7 +59,7 @@ const postHourlyArchive = new mongoose.Schema(
     }
   },
   {
-    collection: "post_hourly_archive"
+    collection: "post_weekly_archive"
   }
 );
 
@@ -67,12 +70,12 @@ const postHourlyArchive = new mongoose.Schema(
  * - virtuals
  */
 
-postHourlyArchive.index({ blog: 1, post: 1, ts: 1, isPage: 1 });
+postWeeklyArchive.index({ blog: 1, post: 1, ts: 1, isPage: 1 });
 
-if (!postHourlyArchive.options.toObject) {
-  postHourlyArchive.options.toObject = {};
+if (!postWeeklyArchive.options.toObject) {
+  postWeeklyArchive.options.toObject = {};
 }
-postHourlyArchive.options.toObject.transform = function (doc, ret, options) {
+postWeeklyArchive.options.toObject.transform = function (doc, ret, options) {
   if (options.hide) {
     options.hide.split(" ").forEach(prop => {
       delete ret[prop];
@@ -80,4 +83,4 @@ postHourlyArchive.options.toObject.transform = function (doc, ret, options) {
   }
 };
 
-module.exports = mongoose.model("postHourlyArchive", postHourlyArchive);
+module.exports = mongoose.model("postWeeklyArchive", postWeeklyArchive);

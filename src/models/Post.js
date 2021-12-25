@@ -32,8 +32,7 @@ const postSchema = new mongoose.Schema({
     type: String
   },
   metaTitleLength: {
-    type: Number,
-    index: true
+    type: Number
   },
   metaDescLength: {
     type: Number
@@ -82,16 +81,15 @@ const postSchema = new mongoose.Schema({
  * - virtuals
  */
 
-const indexes = {
-  id: 1, blog: 1, url: 1, urlLength: 1,
-  invalidSlug: 1, page: 1, muteSEO: 1,
-  featImage: 1, metaTitleLength: 1, metaDescLength: 1,
-  views: 1, avgDailyViews: 1, avgViewTime: 1,
-  published: 1, flagCronUpdated: 1, updated: 1
+// const indexes = {
+//   id: 1, blog: 1, url: 1, urlLength: 1,
+//   invalidSlug: 1, page: 1, muteSEO: 1,
+//   featImage: 1, metaTitleLength: 1, metaDescLength: 1,
+//   views: 1, avgDailyViews: 1, avgViewTime: 1,
+//   published: 1, flagCronUpdated: 1, updated: 1
+// };
 
-}
-
-postSchema.index(indexes);
+// postSchema.index(indexes);
 
 if (!postSchema.options.toObject) {
   postSchema.options.toObject = {};

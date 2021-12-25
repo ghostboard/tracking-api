@@ -3,15 +3,13 @@ const linkSchema = new mongoose.Schema(
   {
     blog: {
       type: String,
-      ref: "Blog",
-      index: true
+      ref: "Blog"
     },
     origin: {
       type: String
     },
     target: {
-      type: String,
-      index: 'text'
+      type: String
     },
     isInternal: {
       type: Boolean

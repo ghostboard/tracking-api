@@ -18,18 +18,14 @@ const schema = new mongoose.Schema({
   ts: {
     type: Date
   },
-  hour: {
-    type: Boolean,
-    default: false
-  },
   day: {
     type: Boolean,
     default: false
   },
-  dayByHours: {
-    type: Boolean,
-    default: false
-  },
+	week: {
+		type: Boolean,
+		default: false
+	},
   month: {
     type: Boolean,
     default: false

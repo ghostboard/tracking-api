@@ -39,7 +39,7 @@ const blogFilterSchema = new mongoose.Schema({
  */
 
 const indexes = {
-  blog: 1, ip: 1, visible: 1
+  blog: 1, user: 1, ip: 1, visible: 1, deleted: 1
 };
 blogFilterSchema.index(indexes);
 

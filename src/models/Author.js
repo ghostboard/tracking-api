@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 const authorSchema = new mongoose.Schema({
   id: {
-    type: String,
-    index: true
+    type: String
   },
   blog: {
     type: String,
-    ref: 'Blog',
-    index: true
+    ref: 'Blog'
   },
   name: {
     type: String

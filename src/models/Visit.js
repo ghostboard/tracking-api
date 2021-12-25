@@ -104,15 +104,15 @@ const visitSchema = new mongoose.Schema(
   }
 );
 
-const indexes = {
-  blog: 1, post: 1, url: 1, slug: 1, browser: 1, os: 1,
-  mobile: 1, tablet: 1, desktop: 1,
-  referer: 1, refererDomain: 1, refererName: 1, hasRefererIcon: 1, refererType: 1,
-  filterSource: 1, UTMSource: 1, UTMMedium: 1, UTMCampaign: 1, UTMTerm: 1, UTMContent: 1,
-  searchQuery: 1, time: 1, country: 1, lang: 1,
-  created: -1
-};
-visitSchema.index(indexes);
+// const indexes = {
+//   blog: 1, post: 1, url: 1, slug: 1, browser: 1, os: 1,
+//   mobile: 1, tablet: 1, desktop: 1,
+//   referer: 1, refererDomain: 1, refererName: 1, hasRefererIcon: 1, refererType: 1,
+//   filterSource: 1, UTMSource: 1, UTMMedium: 1, UTMCampaign: 1, UTMTerm: 1, UTMContent: 1,
+//   searchQuery: 1, time: 1, country: 1, lang: 1,
+//   created: -1
+// };
+// visitSchema.index(indexes);
 
 /**
  * Add your

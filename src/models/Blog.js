@@ -46,8 +46,7 @@ const blogSchema = new mongoose.Schema({
     type: String
   },
   firstVisit: {
-    type: Date,
-    index: true
+    type: Date
   },
   monthlyViews: {
     type: Number
@@ -132,8 +131,7 @@ const blogSchema = new mongoose.Schema({
     type: Date
   },
   lastVisit: {
-    type: Date,
-    index: true
+    type: Date
   },
   lastSeen: {
     type: Date
@@ -149,8 +147,7 @@ const blogSchema = new mongoose.Schema({
   },
   mgRegion: {
     type: String,
-    default: 'US',
-    index: true
+    default: 'US'
   },
   mgDomain: {
     type: String,
@@ -174,8 +171,7 @@ const blogSchema = new mongoose.Schema({
     type: Boolean
   },
   trackVersion: {
-    type: Number,
-    index: true
+    type: Number
   },
   filterOwnIP: {
     type: Boolean
@@ -195,8 +191,7 @@ const blogSchema = new mongoose.Schema({
     type: Date
   },
   created: {
-    type: Date,
-    index: true
+    type: Date
   },
   useTLS: {
     type: Boolean,

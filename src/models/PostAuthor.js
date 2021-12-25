@@ -16,8 +16,7 @@ const postAuthorSchema = new mongoose.Schema({
     index: true
   },
   published: {
-    type: Date,
-    index: true
+    type: Date
   },
   updated: {
     type: Date

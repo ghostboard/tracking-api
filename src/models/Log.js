@@ -1,8 +1,7 @@
 const mongoose    = require('mongoose');
 const logSchema  = new mongoose.Schema({
   code: {
-    type: String,
-    index: true
+    type: String
   },
   title: {
     type: String
@@ -17,8 +16,7 @@ const logSchema  = new mongoose.Schema({
     type: Boolean
   },
   created: {
-    type:       Date,
-    index: true
+    type: Date,
   }
 }, {
   collection: 'logs'

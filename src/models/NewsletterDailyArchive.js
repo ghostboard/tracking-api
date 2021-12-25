@@ -6,8 +6,7 @@ const newsletterDailyArchive = new mongoose.Schema(
       ref: "Blog"
     },
     ts: {
-      type: Date,
-      index: true
+      type: Date
     },
     sent: {
       type: Number,

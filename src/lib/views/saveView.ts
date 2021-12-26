@@ -27,7 +27,6 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
     }
     const newVisit: any = {
         blog: params.blog._id,
-        post: params.postId ? params.postId : null,
         url: fullURL,
         slug: params.slug,
         useragent,
@@ -42,6 +41,9 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
         ip: anonymIP(ip),
         created: moment().toDate()
     };
+    if (params.postId) {
+        newVisit.post = params.postId;
+    }
     if (params.isNoscript) {
         newVisit.noscript = true
     }

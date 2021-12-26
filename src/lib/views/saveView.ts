@@ -25,6 +25,12 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
             fullURL += params.slug.substring(1);
         }
     }
+    let device = 'desktop'
+    if (useragentIsMobile) {
+        device = 'mobile'
+    } else if (useragentIsTablet) {
+        device = 'tablet'
+    }
     const newVisit: any = {
         blog: params.blog._id,
         url: fullURL,
@@ -32,6 +38,7 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
         useragent,
         browser: UAData.browser.name,
         os: UAData.os.name,
+        device,
         mobile: useragentIsMobile,
         tablet: useragentIsTablet,
         desktop: !useragentIsMobile && !useragentIsTablet,

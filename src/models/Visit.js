@@ -1,107 +1,110 @@
 const mongoose = require("mongoose");
 const visitSchema = new mongoose.Schema(
-  {
-    blog: {
-      type: String,
-      ref: "Blog"
+    {
+        blog: {
+            type: String,
+            ref: "Blog"
+        },
+        post: {
+            type: String,
+            ref: "Post"
+        },
+        url: {
+            type: String
+        },
+        slug: {
+            type: String
+        },
+        useragent: {
+            type: String
+        },
+        browser: {
+            type: String
+        },
+        os: {
+            type: String
+        },
+        device: {
+            type: String
+        },
+        mobile: {
+            type: Boolean
+        },
+        tablet: {
+            type: Boolean
+        },
+        desktop: {
+            type: Boolean
+        },
+        referer: {
+            type: String
+        },
+        refererDomain: {
+            type: String
+        },
+        refererName: {
+            type: String
+        },
+        hasRefererIcon: {
+            type: Boolean,
+            default: false
+        },
+        refererType: {
+            type: String,
+            enum: [
+                "direct",
+                "email",
+                "search",
+                "social",
+                "paid",
+                "internal",
+                "unknown"
+            ]
+        },
+        filterSource: {
+            type: Boolean,
+            default: false
+        },
+        UTMSource: {
+            type: String
+        },
+        UTMMedium: {
+            type: String
+        },
+        UTMCampaign: {
+            type: String
+        },
+        UTMTerm: {
+            type: String
+        },
+        UTMContent: {
+            type: String
+        },
+        searchQuery: {
+            type: String
+        },
+        time: {
+            type: Number
+        },
+        ip: {
+            type: String
+        },
+        country: {
+            type: String
+        },
+        lang: {
+            type: String
+        },
+        created: {
+            type: Date
+        },
+        postCheck: {
+            type: Date
+        }
     },
-    post: {
-      type: String,
-      ref: "Post"
-    },
-    url: {
-      type: String
-    },
-    slug: {
-      type: String
-    },
-    useragent: {
-      type: String
-    },
-    browser: {
-      type: String
-    },
-    os: {
-      type: String
-    },
-    mobile: {
-      type: Boolean
-    },
-    tablet: {
-      type: Boolean
-    },
-    desktop: {
-      type: Boolean
-    },
-    referer: {
-      type: String
-    },
-    refererDomain: {
-      type: String
-    },
-    refererName: {
-      type: String
-    },
-    hasRefererIcon: {
-      type: Boolean,
-      default: false
-    },
-    refererType: {
-      type: String,
-      enum: [
-        "direct",
-        "email",
-        "search",
-        "social",
-        "paid",
-        "internal",
-        "unknown"
-      ]
-    },
-    filterSource: {
-      type: Boolean,
-      default: false
-    },
-    UTMSource: {
-      type: String
-    },
-    UTMMedium: {
-      type: String
-    },
-    UTMCampaign: {
-      type: String
-    },
-    UTMTerm: {
-      type: String
-    },
-    UTMContent: {
-      type: String
-    },
-    searchQuery: {
-      type: String
-    },
-    time: {
-      type: Number
-    },
-    ip: {
-      type: String
-    },
-    country: {
-      type: String
-    },
-    lang: {
-      type: String
-    },
-    created: {
-      type: Date
-    },
-    postCheck: {
-      type: Date
+    {
+        collection: "visits"
     }
-  },
-  {
-    collection: "visits"
-  }
 );
 
 // const indexes = {
@@ -122,14 +125,14 @@ const visitSchema = new mongoose.Schema(
  */
 
 if (!visitSchema.options.toObject) {
-  visitSchema.options.toObject = {};
+    visitSchema.options.toObject = {};
 }
 visitSchema.options.toObject.transform = function (doc, ret, options) {
-  if (options.hide) {
-    options.hide.split(" ").forEach(prop => {
-      delete ret[prop];
-    });
-  }
+    if (options.hide) {
+        options.hide.split(" ").forEach(prop => {
+            delete ret[prop];
+        });
+    }
 };
 
 module.exports = mongoose.model("Visit", visitSchema);

@@ -26,11 +26,11 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
         }
     }
     let device = 'desktop'
-    if (useragentIsMobile) {
-        device = 'mobile'
-    } else if (useragentIsTablet) {
-        device = 'tablet'
-    }
+		if (useragentIsTablet) {
+			device = 'tablet';
+		} else if (useragentIsMobile) {
+			device = 'mobile';
+		}
     const newVisit: any = {
         blog: params.blog._id,
         url: fullURL,

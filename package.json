@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/ghostboard/api#readme",
   "dependencies": {
+    "@newrelic/fastify": "github:newrelic-experimental/newrelic-javascript-fastify",
     "@socket.io/redis-emitter": "^4.1.0",
     "dotenv": "^10.0.0",
     "fast-glob": "^3.2.7",

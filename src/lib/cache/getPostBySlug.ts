@@ -17,7 +17,7 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
             const select = '_id firstVisit url';
             const query = {
                 blog: blogId,
-                url: new RegExp(escapeStringRegexp(slug), "gi")
+                url: new RegExp(escapeStringRegexp(slug), "g")
             };
             const post = await db.Post.findOne(query).select(select).lean();
             const isValid = post && post._id && post.url && post.url.endsWith(slug);

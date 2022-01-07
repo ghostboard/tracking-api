@@ -15,7 +15,9 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         i: image 
     } = queryParams
     const origin = req.headers["referer"] || ''
-    const out = await create(blogId, origin, target, title, text, image)
+		const useragent = req.headers["user-agent"] || ''
+		const ip = req.ip
+    const out = await create(blogId, origin, target, title, text, image, useragent, ip)
     return serveTransparentGif(res)
 }
 

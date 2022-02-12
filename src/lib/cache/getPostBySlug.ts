@@ -4,7 +4,7 @@ import escapeStringRegexp from '../util/escapeStringRegexp'
 
 export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{
     const key = `blog:${blogId}:post_by_slug:${slug}`;
-    const expiration = 60 * 60;
+    const expiration = 120 * 60;
     const notFoundExpiration = 5*60;
     return new Promise((resolve, reject) => {
         cache.get(key, async(err, item) => {
@@ -32,5 +32,6 @@ export async function findPostBySlug(blogId: string, slug: string) {
 		blog: blogId,
 		url: new RegExp(escapeStringRegexp(slug), "g")
 	};
+	console.log('query', query)
 	return db.Post.findOne(query).select(select).lean();
 }

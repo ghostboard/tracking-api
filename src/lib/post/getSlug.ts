@@ -28,6 +28,14 @@ export default function(blog: any, path: string, removeQuery:boolean=false, remo
     const domainIndex = path.indexOf(rootPath);
     const slugStart = domainIndex + rootPath.length;
     let slug = path.substring(slugStart);
+		const isAuthor = slug.includes('/author/');
+		const isTag = slug.includes('/tag/');
+		const isPreview = slug.includes('/p/');
+		const skip = isAuthor || isTag || isPreview;
+		if (skip) {
+			return slug;
+		}
+
 		const partials = slug.split('/').sort((a, b) => b.length - a.length);
     if (removeQuery) {
 	    const selected: any = partials.find((item) => !item.startsWith('?') && !item.startsWith('amp?'));

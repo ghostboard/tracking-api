@@ -37,4 +37,22 @@ describe("findPostBySlug", () => {
 		expect(out).toHaveProperty('_id')
 		expect(out).toHaveProperty('url')
 	})
+
+	test("it should get a post with slash", async () => {
+		const blogId = '5e742d849f453d4bdc2c762f';
+		const slug = '/1969-chevrolet-camaro-beats';
+		const out = await findPostBySlug(blogId, slug)
+		expect(out).toBeDefined()
+		expect(out).toHaveProperty('_id')
+		expect(out).toHaveProperty('url')
+	})
+
+	test.skip("it should get a post with slash", async () => {
+		const blogId = '5f60c8914dfb34476a1c3b26';
+		const slug = '/reading-bus-operator-show-patriotism-for-the-queens-jubilee';
+		const out = await findPostBySlug(blogId, slug)
+		expect(out).toBeDefined()
+		expect(out).toHaveProperty('_id')
+		expect(out).toHaveProperty('url')
+	})
 })

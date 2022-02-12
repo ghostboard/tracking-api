@@ -279,4 +279,34 @@ describe("getSlug", () => {
 		const path = `https://www.meesho.io/jobs/senior-finance-executive---farmiso-logistics-ap/amp?id=16312c3d-555a-4171-89bd-c937f827483f`;
 		expect(getSlug(blog, path, true)).toEqual(slug);
 	});
+
+	test('issue getting author page', () => {
+		const blog = {
+			domain: 'meesho.io',
+			url: "https://meesho.io/",
+		};
+		const slug = '/author/elisabeth';
+		const path = `https://www.meesho.io/author/elisabeth`;
+		expect(getSlug(blog, path, true)).toEqual(slug);
+	});
+
+	test('issue getting tag page', () => {
+		const blog = {
+			domain: 'meesho.io',
+			url: "https://meesho.io/",
+		};
+		const slug = '/tag/english';
+		const path = `https://www.meesho.io/tag/english`;
+		expect(getSlug(blog, path, true)).toEqual(slug);
+	});
+
+	test('issue getting preview page', () => {
+		const blog = {
+			domain: 'meesho.io',
+			url: "https://meesho.io/",
+		};
+		const slug = '/p/123-456';
+		const path = `https://www.meesho.io/p/123-456`;
+		expect(getSlug(blog, path, true)).toEqual(slug);
+	});
 })

@@ -1,4 +1,4 @@
-export default function(blog: any, path: string, removeQuery:boolean=false): string {
+export default function(blog: any, path: string, removeQuery:boolean=false, removeSubfolder:boolean=false): string {
     if (!path) {
         return '';
     }
@@ -27,26 +27,26 @@ export default function(blog: any, path: string, removeQuery:boolean=false): str
 
     const domainIndex = path.indexOf(rootPath);
     const slugStart = domainIndex + rootPath.length;
-    let lastSlash = path.length;
+    let slug = path.substring(slugStart);
+		const partials = slug.split('/').sort((a, b) => b.length - a.length);
     if (removeQuery) {
-        const lastSlashIndex = path.substring(slugStart + 1).lastIndexOf('/');
-        if (lastSlashIndex >= 0) {
-            lastSlash = path.substring(slugStart + 1).lastIndexOf('/') + 2 + slugStart;
-        }
-    }
-    const slug = path.substring(slugStart, lastSlash);
-    let selected = slug;
-    if (removeQuery) {
-        const partials = slug.split('/').sort((a, b) => b.length - a.length);
-        selected = partials.find((item) => {
-            return !item.includes('?');
-        }) || slug;
-        const ampIndex = selected.lastIndexOf('/amp');
-        const hasAmp = ampIndex && ampIndex > 2;
-        if (hasAmp) {
-            selected = selected.substring(0, selected.indexOf('/amp') + 1);
-        }
-        return '/' + selected + '/';
+	    const selected: any = partials.find((item) => !item.startsWith('?') && !item.startsWith('amp?'));
+	    slug = '/'+ selected.split('?')[0];
+			const isGoogleCache = path.includes('.googleusercontent.com');
+			if (isGoogleCache) {
+				slug = slug.substring(0, slug.indexOf('+'));
+			}
+    } else {
+	    const selected: any = partials.find((item) => !item.startsWith('?'));
+			const hasAlreadyQuery = selected.includes('?');
+	    slug = '/'+ selected;
+			if (!hasAlreadyQuery) {
+				const queries = path.split('?');
+				if (queries.length > 1) {
+					slug += '?' + queries[1];
+				}
+			}
+
     }
 
     return slug;

@@ -1,7 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
-import moment from "moment"
 import db from '../../../models'
-import FEATURES_FLAGS from '../../../config/features'
 import getBlogFilters from "../../../lib/cache/getBlogFilters"
 import getBlogForVisits from "../../../lib/cache/getBlogForVisits"
 import getPostBySlug from "../../../lib/cache/getPostBySlug"
@@ -29,7 +27,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
             return res.code(204).send();
         }
         const referer = req.headers["referer"] || ''
-        let path = referer
+        const path = body.U || referer
         const userIP = req.ip;
         const [ipFilters, blog] = await Promise.all([
             getBlogFilters(blogId),
@@ -57,8 +55,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
             return res.code(204).send(false);
         }
 
-        const pathWithoutQuery = body.U || referer;
-        const postSlug = getSlug(blog, pathWithoutQuery, true);
+        const postSlug = getSlug(blog, path, true);
         let post: any = null;
         let postId = null;
         const isHome = !postSlug || postSlug === "/";

@@ -1,7 +1,15 @@
 import mongoose from 'mongoose'
 import { FastifyInstance } from 'fastify'
 
-export default async function(fastify: FastifyInstance): Promise<boolean>{
+function log(message: string, fastify?: FastifyInstance) {
+	if (fastify) {
+		fastify.log.info(message);
+	} else {
+		console.log(message)
+	}
+}
+
+export default async function(fastify?: FastifyInstance): Promise<boolean>{
     // Database
     mongoose.Promise = global.Promise;
 
@@ -19,7 +27,7 @@ export default async function(fastify: FastifyInstance): Promise<boolean>{
     // CONNECTION EVENTS
     // When successfully connected
     mongoose.connection.on('connected', () => {
-        fastify.log.info(`Mongoose connected to ${process.env.DATABASE} ✅`);
+        log(`Mongoose connected to ${process.env.DATABASE} ✅`, fastify);
         // Here we send the ready signal to PM2
         if (process && process.send) {
             process.send('ready');
@@ -28,18 +36,18 @@ export default async function(fastify: FastifyInstance): Promise<boolean>{
 
     // If the connection throws an error
     mongoose.connection.on("error", (err: any) => {
-        fastify.log.error(`Mongoose connection error: ${err} 🚨`);
+        log(`Mongoose connection error: ${err} 🚨`, fastify);
     });
 
     // When the connection is disconnected
     mongoose.connection.on("disconnected", () => {
-        fastify.log.info(`Mongoose connection disconnected`);
+        log(`Mongoose connection disconnected`, fastify);
     });
 
     // If the Node process ends, close the Mongoose connection
     process.on("SIGINT", () => {
         mongoose.connection.close(() => {
-            fastify.log.info("Mongoose connection disconnected through app termination");
+            log("Mongoose connection disconnected through app termination", fastify);
             process.exit(0);
         });
     });

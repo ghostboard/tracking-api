@@ -14,12 +14,7 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
             if (item) {
                 return resolve(JSON.parse(item));
             }
-            const select = '_id firstVisit url';
-            const query = {
-                blog: blogId,
-                url: new RegExp(escapeStringRegexp(slug), "g")
-            };
-            const post = await db.Post.findOne(query).select(select).lean();
+						const post = await findPostBySlug(blogId, slug);
             const isValid = post && post._id && post.url && post.url.endsWith(slug);
             if (isValid) {
                 cache.setex(key, expiration, JSON.stringify(post));
@@ -29,4 +24,13 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
             resolve(post);
         });
     });
+}
+
+export async function findPostBySlug(blogId: string, slug: string) {
+	const select = '_id firstVisit url';
+	const query = {
+		blog: blogId,
+		url: new RegExp(escapeStringRegexp(slug), "g")
+	};
+	return db.Post.findOne(query).select(select).lean();
 }

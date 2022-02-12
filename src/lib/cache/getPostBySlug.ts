@@ -15,7 +15,7 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
                 return resolve(JSON.parse(item));
             }
 						const post = await findPostBySlug(blogId, slug);
-            const isValid = post && post._id && post.url && post.url.endsWith(slug);
+            const isValid = post && post._id && post.url && post.url.includes(slug);
             if (isValid) {
                 cache.setex(key, expiration, JSON.stringify(post));
             } else {
@@ -32,6 +32,5 @@ export async function findPostBySlug(blogId: string, slug: string) {
 		blog: blogId,
 		url: new RegExp(escapeStringRegexp(slug), "g")
 	};
-	console.log('query', query)
 	return db.Post.findOne(query).select(select).lean();
 }

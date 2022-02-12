@@ -54,8 +54,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
         return res.code(200).send(0)
     }
 
-    const pathWithoutQuery = referer || ''
-    const postSlug = getSlug(blog, pathWithoutQuery, true)
+    const postSlug = getSlug(blog, path, true)
     let post: any = null
     let postId = null
     const isHome = !postSlug || postSlug === "/"

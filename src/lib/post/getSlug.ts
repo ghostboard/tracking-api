@@ -33,6 +33,9 @@ export default function(blog: any, path: string, removeQuery:boolean=false, simp
 		const isPreview = slug.includes('/p/');
 		const skip = isAuthor || isTag || isPreview;
 		if (skip ||simpleSlug) {
+			if (removeQuery) {
+				return slug.split('?')[0];
+			}
 			return slug;
 		}
 

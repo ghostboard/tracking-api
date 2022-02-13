@@ -29,7 +29,7 @@ describe("findPostBySlug", () => {
 		expect(out).toHaveProperty('firstVisit')
 	})
 
-	test("it should get a post with slash", async () => {
+	test.skip("it should get a post with slash", async () => {
 		const blogId = '61b1b19c6e7af34d77ca3c1f';
 		const slug = '/meesho-adopts-boundaryless-workplace-model';
 		const out = await findPostBySlug(blogId, slug)

@@ -309,4 +309,14 @@ describe("getSlug", () => {
 		const path = `https://www.meesho.io/p/123-456`;
 		expect(getSlug(blog, path, true)).toEqual(slug);
 	});
+
+	test('simple slug option', () => {
+		const blog = {
+			domain: 'meesho.io',
+			url: "https://meesho.io/",
+		};
+		const slug = '/jobs/senior-finance-executive---farmiso-logistics-ap/amp?id=16312c3d-555a-4171-89bd-c937f827483f';
+		const path = `https://www.meesho.io/jobs/senior-finance-executive---farmiso-logistics-ap/amp?id=16312c3d-555a-4171-89bd-c937f827483f`;
+		expect(getSlug(blog, path, false, true)).toEqual(slug);
+	});
 })

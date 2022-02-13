@@ -36,7 +36,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
         if (!blog) {
             return res.code(404).send({ message: `Blog not found with ID=${blogId}` });
         }
-        const slug = getSlug(blog, path);
+        const slug = getSlug(blog, path, false, true);
         if (isPreview(slug)) {
             return res.code(204).send();
         }

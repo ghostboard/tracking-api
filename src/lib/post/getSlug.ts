@@ -1,4 +1,4 @@
-export default function(blog: any, path: string, removeQuery:boolean=false, removeSubfolder:boolean=false): string {
+export default function(blog: any, path: string, removeQuery:boolean=false, simpleSlug:boolean=false): string {
     if (!path) {
         return '';
     }
@@ -32,7 +32,7 @@ export default function(blog: any, path: string, removeQuery:boolean=false, remo
 		const isTag = slug.includes('/tag/');
 		const isPreview = slug.includes('/p/');
 		const skip = isAuthor || isTag || isPreview;
-		if (skip) {
+		if (skip ||simpleSlug) {
 			return slug;
 		}
 

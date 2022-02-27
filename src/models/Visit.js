@@ -18,6 +18,9 @@ const visitSchema = new mongoose.Schema(
         useragent: {
             type: String
         },
+	      ua: {
+		      type: String
+	      },
         browser: {
             type: String
         },

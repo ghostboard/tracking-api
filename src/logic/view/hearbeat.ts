@@ -23,7 +23,7 @@ export default async function heartbeat(viewId: string, time: number, event: str
     if (isNegativeTime) {
         time *= -1;
     }
-    if (time > 0) {
+    if (time > 0) {
         const now = moment();
         const query = {
             _id: viewId

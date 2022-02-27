@@ -2,6 +2,10 @@ export default function(blog: any, path: string, removeQuery:boolean=false, simp
     if (!path) {
         return '';
     }
+		const isSlug = path.startsWith('/') && !path.includes('http') && !path.includes('://');
+		if (isSlug) {
+			return path;
+		}
     if (blog.url) {
         const blogHasHttps = blog.url.startsWith('https');
         const pathHasHttps = path.startsWith('https');

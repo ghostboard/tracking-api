@@ -29,7 +29,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
     const out = await heartbeat(visitID, time, event, useragent)
     const hasResponse = out && out.code
     if (hasResponse) {
-        return res.code(out.code).send(out.message || false)
+        return res.code(out.code).send(out.message || false)
     }
     return res.code(200).send(1)
 }

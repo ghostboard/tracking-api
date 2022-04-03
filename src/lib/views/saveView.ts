@@ -18,7 +18,7 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
     const useragentIsTablet = isTablet(useragent);
     const UAData = UAParser(useragent);
     const country = turboGeoip.getCountry(ip)
-    let fullURL = (req.body as any).U || req.headers["referer"];
+    let fullURL = (req.body as any)?.U || req.headers["referer"];
     if (!fullURL) {
         fullURL = params.blog.url;
         if (params.slug) {

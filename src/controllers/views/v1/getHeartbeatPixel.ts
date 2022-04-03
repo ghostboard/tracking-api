@@ -10,7 +10,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     let time = queryParams.t ? parseInt(queryParams.t) : 0
     let event = queryParams.e
     const useragent = req.headers["user-agent"] || ''
-    const out = await heartbeat(viewId, time, event, useragent)
+    heartbeat(viewId, time, event, useragent).then()
     return res.code(200).send()
 }
 

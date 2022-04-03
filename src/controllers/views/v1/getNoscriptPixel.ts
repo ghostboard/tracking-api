@@ -77,7 +77,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
         referer,
         isNoscript: true
     };
-    await saveView(visitParams, req);
+    saveView(visitParams, req).then();
     return res.code(200).send()
 }
 

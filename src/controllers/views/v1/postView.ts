@@ -14,7 +14,7 @@ import emitSetup from "../../../lib/socket/emitSetup"
 
 export const method = 'POST'
 export const url = '/v1/views/:blogId'
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<number> {
+export async function handler(req: FastifyRequest, res: FastifyReply): Promise<FastifyReply> {
     try {
         const params = (req.params as any)
         const body = (req.body as any)
@@ -126,7 +126,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     } catch (e) {
         console.error('Error postView ', e);
     }
-    return 1
+		return res
 }
 
 export default function (fastify: FastifyInstance) {

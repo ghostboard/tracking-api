@@ -16,12 +16,11 @@ export default async function (blogId: string, origin: string, target: string, t
         target,
         created: new Date()
     };
-    if (text || title) {
-        newClick.text = text || title;
-    }
 		if (image) {
         newClick.image = image;
-    }
+    } else if (text || title) {
+			newClick.text = text || title;
+		}
 		if (useragent) {
 			newClick.ua = useragent;
 			const useragentIsMobile = isMobile(useragent);

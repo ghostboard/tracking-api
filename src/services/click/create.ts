@@ -21,6 +21,10 @@ export default async function (blogId: string, origin: string, target: string, t
     } else if (text || title) {
 			newClick.text = text || title;
 		}
+		const proceed = newClick.text || newClick.image;
+		if (!proceed) {
+			return { done: false, message: 'Missing text and image' };
+		}
 		if (useragent) {
 			newClick.ua = useragent;
 			const useragentIsMobile = isMobile(useragent);
@@ -45,9 +49,5 @@ export default async function (blogId: string, origin: string, target: string, t
 			}
 		}
 
-		const proceed = newClick.text || newClick.image;
-		if (!proceed) {
-			return { done: false, message: 'Missing text and image' };
-		}
 		return db.Click.create(newClick);
 }

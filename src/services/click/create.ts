@@ -45,5 +45,9 @@ export default async function (blogId: string, origin: string, target: string, t
 			}
 		}
 
-    return db.Click.create(newClick);
+		const proceed = newClick.text || newClick.image;
+		if (!proceed) {
+			return { done: false, message: 'Missing text and image' };
+		}
+		return db.Click.create(newClick);
 }

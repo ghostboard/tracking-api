@@ -35,6 +35,9 @@ const clickSchema = new mongoose.Schema(
 		country: {
 			type: String
 		},
+		social: {
+			type: String
+		},
 		created: {
 			type: Date
 		}

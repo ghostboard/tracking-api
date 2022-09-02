@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import turboGeoip from 'turbo-geoip-country'
+import RefererParser from 'referer-parser'
 import db from '../../models'
 import isMobile from "../../lib/views/isMobile";
 import isTablet from "../../lib/views/isTablet";
@@ -24,6 +25,12 @@ export default async function (blogId: string, origin: string, target: string, t
 		const proceed = newClick.text || newClick.image;
 		if (!proceed) {
 			return { done: false, message: 'Missing text and image' };
+		}
+		const targetData = new RefererParser(target);
+		if (targetData && targetData.referer) {
+			if (targetData.medium === 'social') {
+				newClick.social = targetData.refererName
+			}
 		}
 		if (useragent) {
 			newClick.ua = useragent;

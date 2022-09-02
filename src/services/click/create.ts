@@ -26,10 +26,12 @@ export default async function (blogId: string, origin: string, target: string, t
 		if (!proceed) {
 			return { done: false, message: 'Missing text and image' };
 		}
-		const targetData = new RefererParser(target);
-		if (targetData && targetData.referer) {
-			if (targetData.medium === 'social') {
-				newClick.social = targetData.refererName
+		if (target) {
+			const targetData = new RefererParser(target);
+			if (targetData && targetData.referer) {
+				if (targetData.medium === 'social') {
+					newClick.social = targetData.refererName
+				}
 			}
 		}
 		if (useragent) {

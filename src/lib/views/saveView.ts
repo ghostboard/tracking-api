@@ -78,19 +78,19 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
         const UTMTerm = queryData.utm_term;
         const UTMContent = queryData.utm_content;
         if (UTMSource) {
-            newVisit.UTMSource = UTMSource;
+            newVisit.UTMSource = Array.isArray(UTMSource) ? UTMSource[0] : UTMSource;
         }
         if (UTMMedium) {
-            newVisit.UTMMedium = UTMMedium;
+            newVisit.UTMMedium = Array.isArray(UTMMedium) ? UTMMedium[0] : UTMMedium;
         }
         if (UTMCampaign) {
-            newVisit.UTMCampaign = UTMCampaign;
+            newVisit.UTMCampaign = Array.isArray(UTMCampaign) ? UTMCampaign[0] : UTMCampaign;
         }
         if (UTMTerm) {
-            newVisit.UTMTerm = UTMTerm;
+            newVisit.UTMTerm = Array.isArray(UTMTerm) ? UTMTerm[0] : UTMTerm;
         }
         if (UTMContent) {
-            newVisit.UTMContent = UTMContent;
+            newVisit.UTMContent = Array.isArray(UTMContent) ? UTMContent[0] : UTMContent;
         }
     }
     const hasReferer = !!newVisit.refererName;

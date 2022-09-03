@@ -28,10 +28,9 @@ export default async function (blogId: string, origin: string, target: string, t
 		}
 		if (target) {
 			const targetData = new RefererParser(target);
-			if (targetData && targetData.referer) {
-				if (targetData.medium === 'social') {
-					newClick.social = targetData.refererName
-				}
+			const isSocial = targetData && targetData.referer && targetData.medium === 'social'
+			if (isSocial) {
+				newClick.social = targetData.referer.toLowerCase()
 			}
 		}
 		if (useragent) {

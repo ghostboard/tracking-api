@@ -21,6 +21,7 @@ export default async function afterView(params: any, req: FastifyRequest) {
                 update.url = domainUrl;
             }
         }
+	      update.url = update.url.split('?')[0];
         update.apiUrl = `${update.url}ghost`;
         update.domain = getDomain(body.F || body.A);
     }

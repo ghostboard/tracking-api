@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
-import db from '../../../models'
 import getBlogFilters from "../../../lib/cache/getBlogFilters"
 import getBlogForVisits from "../../../lib/cache/getBlogForVisits"
 import getBlogHasClickTracking from "../../../lib/cache/getBlogHasClickTracking"
@@ -12,6 +11,7 @@ import onAddView from "../../../lib/cache/live/onAddView"
 import afterView from "../../../lib/blog/afterView"
 import emitDashboard from "../../../lib/socket/emitDashboard"
 import emitSetup from "../../../lib/socket/emitSetup"
+import updateFirstVisit from "../../../services/post/updateFirstVisit";
 
 export const method = 'POST'
 export const url = '/v2/views/:blogId'
@@ -110,14 +110,10 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         // Save post's first visit if proceed
         const firstPostVisit = post && post._id && !post.firstVisit;
         if (firstPostVisit) {
-            const query = {
-                _id: post._id,
-                firstVisit: { $exists: false }
-            };
             const update = {
                 firstVisit: visit.created
             };
-            db.Post.updateOne(query, update).exec();
+	          updateFirstVisit(post._id, update.firstVisit).then();
         }
 
         const todoAfterPost = [

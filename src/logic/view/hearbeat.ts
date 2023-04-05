@@ -1,11 +1,11 @@
 import moment from "moment"
 import mongoose from "mongoose"
-import db from '../../models'
 import VIEWS_CONFIG from '../../config/views'
 import getView from "../../lib/cache/live/getView"
 import onQuitView from "../../lib/cache/live/onQuitView"
 import emitDashboard from "../../lib/socket/emitDashboard"
 import isDesktop from "../../lib/views/isDesktop"
+import updateTime from "../../services/visit/updateTime";
 
 export default async function heartbeat(viewId: string, time: number, event: string, useragent: string): Promise<any> {
     const isValidId = mongoose.Types.ObjectId.isValid(viewId)
@@ -37,7 +37,7 @@ export default async function heartbeat(viewId: string, time: number, event: str
         if (fixTime) {
             update.time = timeDiff;
         }
-        db.Visit.updateOne(query, update).exec();
+	      updateTime(viewId, time).then();
     }
 
     if (event) {

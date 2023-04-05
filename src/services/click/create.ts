@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
 import turboGeoip from 'turbo-geoip-country'
 import RefererParser from 'referer-parser'
-import db from '../../models'
+import mongoDb from '../../models'
+import db from "../../sources/postgres"
 import isMobile from "../../lib/views/isMobile";
 import isTablet from "../../lib/views/isTablet";
 import UAParser from "ua-parser-js";
@@ -57,5 +58,7 @@ export default async function (blogId: string, origin: string, target: string, t
 			}
 		}
 
-		return db.Click.create(newClick);
+		db('clicks').insert(newClick).then().catch((e) => console.log('> clickCreate', e))
+
+		return mongoDb.Click.create(newClick);
 }

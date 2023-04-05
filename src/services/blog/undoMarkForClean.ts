@@ -1,11 +1,8 @@
 import mongoose from "mongoose"
-import db from '../../models'
+import mongoDb from '../../models'
+import db from "../../sources/postgres"
 
 export default async function (blogId: string, ownerId: string) {
-    const isValidId = mongoose.Types.ObjectId.isValid(blogId)
-    if (!isValidId) {
-        return { done: false, message: 'Invalid blogId' }
-    }
     const query = {
         _id: blogId,
         user: ownerId
@@ -14,5 +11,13 @@ export default async function (blogId: string, ownerId: string) {
         enableClient: true,
         removedAt: null
     }
-    return db.Blog.updateOne(query, update);
+		db('blogs').where({
+			id: blogId,
+			user: ownerId
+		}).update({...update}).then().catch((e) => console.log('> undoMarkForClean', e))
+		const isValidId = mongoose.Types.ObjectId.isValid(blogId)
+		if (!isValidId) {
+			return { done: false, message: 'Invalid blogId' }
+		}
+    return mongoDb.Blog.updateOne(query, update);
 }

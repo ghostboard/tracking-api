@@ -1,9 +1,10 @@
 import moment from 'moment'
 import { FastifyRequest } from "fastify"
-import db from '../../models'
 import getDomain from '../util/getDomain'
 import hasGhostContentAPI from './hasGhostContentAPI'
 import hasMailgunNewsletter from './hasMailgunNewsletter'
+import updateAfterVisit from "../../services/blog/updateAfterVisit";
+import updateFirstVisit from "../../services/user/updateFirstVisit";
 
 export default async function afterView(params: any, req: FastifyRequest) {
     const body = (req.body as any)
@@ -30,7 +31,7 @@ export default async function afterView(params: any, req: FastifyRequest) {
     if (isFirstVisit) {
         update.active = true;
         update.firstVisit = moment().utc().toDate();
-        db.User.updateOne({ _id: params.blog.user }, { firstVisit: update.firstVisit }).exec();
+	      updateFirstVisit(params.blog.user, update.firstVisit).then();
     }
     if (body.E) {
         // Generator
@@ -48,8 +49,5 @@ export default async function afterView(params: any, req: FastifyRequest) {
     if (body.V) {
         update.trackVersion = body.V;
     }
-    const query = {
-        _id: params.visit.blog
-    }
-    return db.Blog.updateOne(query, update)
+		return updateAfterVisit(params.visit.blog, update);
 }

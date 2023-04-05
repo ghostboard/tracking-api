@@ -4,12 +4,12 @@ import querystring from 'querystring'
 import urlParser from 'url'
 import turboGeoip from 'turbo-geoip-country'
 import { FastifyRequest } from "fastify"
-import db from '../../models'
 import isEmail from "./isEmail"
 import isMobile from "./isMobile"
 import isTablet from "./isTablet"
 import anonymIP from "./anonymIP"
 import getRefererMetadata from "./getRefererMetadata"
+import insert from "../../services/visit/insert";
 
 export default async function saveView(params: any, req: FastifyRequest): Promise<string[]> {
     const useragent = req.headers["user-agent"];
@@ -100,5 +100,5 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
     if (setFromEmail) {
         newVisit.refererType = 'email';
     }
-    return db.Visit.create(newVisit);
+		return insert(newVisit);
 }

@@ -1,3 +1,4 @@
+import * as crypto from "crypto";
 import mongoose from "mongoose"
 import turboGeoip from 'turbo-geoip-country'
 import RefererParser from 'referer-parser'
@@ -58,7 +59,9 @@ export default async function (blogId: string, origin: string, target: string, t
 			}
 		}
 
-		db('clicks').insert(newClick).then().catch((e) => console.log('> clickCreate', e))
+		const sqlClick = {...newClick};
+		sqlClick.id = crypto.randomBytes(16).toString("hex")
+		db('clicks').insert(sqlClick).then().catch((e) => console.log('> clickCreate', e))
 
 		return mongoDb.Click.create(newClick);
 }

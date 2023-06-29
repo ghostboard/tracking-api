@@ -4,10 +4,10 @@ import db from "../../sources/postgres"
 
 export default async function (newView: object) {
 	const sqlView:any = {...newView};
-	sqlView.id = crypto.randomBytes(16).toString("hex")
+	const visit = await mongoDb.Visit.create(newView);
+	// sqlView.id = crypto.randomBytes(16).toString("hex")
+	sqlView.id = visit._id;
 	delete sqlView.noscript;
-	db('visits').insert(sqlView)
-		.then().catch((e) => console.log('> insertView', e))
-	
-	return mongoDb.Visit.create(newView);
+	db('visits').insert(sqlView).then().catch((e) => console.log('> insertView', e))
+	return visit;
 }

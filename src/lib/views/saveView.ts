@@ -32,7 +32,7 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
 			device = 'mobile';
 		}
     const newVisit: any = {
-        blog: params.blog._id,
+        blog: params.blog._id.toString(),
         url: fullURL,
         slug: params.slug,
 	      ua: useragent,

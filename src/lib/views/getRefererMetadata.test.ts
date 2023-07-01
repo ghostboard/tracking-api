@@ -10,7 +10,6 @@ describe("getRefererMetadata", () => {
 	        referer: 'https://www.facebook.com/whatever'
         }
 				const output = getRefererMetadata(input);
-				console.log('>> output', output.referer);
         expect(output).toBeDefined();
 				expect(output.refererType).toEqual('social')
     })

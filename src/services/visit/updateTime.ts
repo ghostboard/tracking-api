@@ -7,7 +7,6 @@ export default async function (viewId: string, time: number) {
 	};
 	try {
 		const query = db('visits').where('id', viewId).update(update);
-		console.log('>> uptime time query', query.toString());
 		await query;
 	} catch (e) {
 		console.log('> sql updateTime error', viewId, time)

@@ -52,7 +52,7 @@
     "querystring": "^0.2.1",
     "redis": "^3.1.2",
     "referer-parser": "github:ghostboard/referer-parser",
-    "turbo-geoip-country": "^23.4.0",
+    "turbo-geoip-country": "^23.7.0",
     "ua-parser-js": "^0.7.35"
   },
   "devDependencies": {

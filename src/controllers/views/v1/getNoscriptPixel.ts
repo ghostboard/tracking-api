@@ -61,7 +61,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<n
     if (!isHome) {
         // search
         post = await getPostBySlug(blogId, postSlug)
-        postId = post && post._id ? post._id.toString() : null
+        postId = post && (post.id || post._id) ? (post.id || post._id.toString()) : null
     }
 
     let lang = '';

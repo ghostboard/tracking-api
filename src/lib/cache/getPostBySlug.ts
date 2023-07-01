@@ -1,6 +1,7 @@
-import db from '../../models'
+import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
 import escapeStringRegexp from '../util/escapeStringRegexp'
+import db from "../../sources/postgres"
 
 export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{
     const key = `blog:${blogId}:post_by_slug:${slug}`;
@@ -15,7 +16,7 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
                 return resolve(JSON.parse(item));
             }
 						const post = await findPostBySlug(blogId, slug);
-            const isValid = post && post._id && post.url && post.url.includes(slug);
+            const isValid = post && post.url && post.url.includes(slug);
             if (isValid) {
                 cache.setex(key, expiration, JSON.stringify(post));
             } else {
@@ -27,10 +28,15 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
 }
 
 export async function findPostBySlug(blogId: string, slug: string) {
-	const select = '_id firstVisit url';
-	const query = {
-		blog: blogId,
-		url: new RegExp(escapeStringRegexp(slug), "g")
-	};
-	return db.Post.findOne(query).select(select).lean();
+	// const select = '_id firstVisit url';
+	// const query = {
+	// 	blog: blogId,
+	// 	url: new RegExp(escapeStringRegexp(slug), "g")
+	// };
+	// return mongodb.Post.findOne(query).select(select).lean();
+
+	return db('posts').select('id', 'firstVisit', 'url')
+		.where('blog', blogId)
+		.whereILike('url', slug)
+		.first()
 }

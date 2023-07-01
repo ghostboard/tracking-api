@@ -64,31 +64,32 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         if (!isHome) {
             // search
             post = await getPostBySlug(blogId, postSlug);
-            postId = post && post._id ? post._id.toString() : null
+            postId = post && (post.id || post._id) ? (post.id || post._id.toString()) : null
         }
         const viewParams = {
             blog,
             post,
             slug,
+	          blogId,
             postId,
             lang: body.C ? body.C.split("-")[0] : null,
             referer: body.D,
             visit: {}
         };
         const visit: any = await saveView(viewParams, req);
-        const hasVisitId = visit && visit._id;
-        if (!hasVisitId) {
+        const visitId = visit && (visit.id || visit._id);
+        if (!visitId) {
             return res.code(401).send(false)
         }
 				const output: any = {
-					id: visit._id.toString(),
+					id: visitId,
 					tc: blogHasClickTracking ? 1 : 0
 				}
         res.code(200).send(output);
 
         const newLive: any = {
             blog: blogId,
-            visit: visit._id.toString(),
+            visit: visit.id || visit._id.toString(),
             url: visit.url,
             slug: visit.slug,
             mobile: visit.mobile,
@@ -108,12 +109,12 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         viewParams.visit = visit;
 
         // Save post's first visit if proceed
-        const firstPostVisit = post && post._id && !post.firstVisit;
+        const firstPostVisit = post && (post.id || post._id) && !post.firstVisit;
         if (firstPostVisit) {
             const update = {
                 firstVisit: visit.created
             };
-	          updateFirstVisit(post._id, update.firstVisit).then();
+	          updateFirstVisit((post.id || post._id), update.firstVisit).then();
         }
 
         const todoAfterPost = [

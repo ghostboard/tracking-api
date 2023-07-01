@@ -1,5 +1,6 @@
-import db from '../../models'
+import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
+import db from "../../sources/postgres"
 
 export default async function getBlogFilters(blogId: string) :Promise<string[]> {
     const key = `blog:${blogId}:ip_filters`;
@@ -13,13 +14,16 @@ export default async function getBlogFilters(blogId: string) :Promise<string[]> 
             if (list) {
                 return resolve(JSON.parse(list));
             }
-            const query = {
-                blog: blogId,
-                deleted: {
-                    $exists: false
-                }
-            };
-            const filters = await db.BlogFilter.find(query).select('ip').lean();
+            // const query = {
+            //     blog: blogId,
+            //     deleted: {
+            //         $exists: false
+            //     }
+            // };
+            // const filters = await mongodb.BlogFilter.find(query).select('ip').lean();
+						const filters = await db('blog_filters').select('ip')
+							.where('blog', blogId)
+							.whereNull('deleted');
             const ipList = filters.map((item: any) => item.ip);
             cache.setex(key, expiration, JSON.stringify(ipList));
             resolve(ipList);

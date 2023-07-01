@@ -8,10 +8,6 @@ export default async function (newView: object) {
 	// sqlView.id = crypto.randomBytes(16).toString("hex")
 	sqlView.id = visit._id.toString();
 	delete sqlView.noscript;
-	if (sqlView.blog?.includes('"')) {
-		console.error('>> visit row blog includes quotes', sqlView, newView);
-		sqlView.blog = sqlView.blog.replace(/"/g, '');
-	}
 	db('visits').insert(sqlView).then().catch((e) => console.log('> insertView', e))
 	return visit;
 }

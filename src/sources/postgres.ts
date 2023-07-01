@@ -5,5 +5,6 @@ const config = {
 	client: 'postgres',
 	connection
 }
+
 const client = knex(config)
 export default client

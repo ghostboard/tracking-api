@@ -1,5 +1,6 @@
-import db from '../../models'
+import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
+import db from "../../sources/postgres"
 
 export default async function getBlogForVisits(blogId: string) :Promise<any> {
     const key = `blog:${blogId}:for_visits`;
@@ -16,14 +17,19 @@ export default async function getBlogForVisits(blogId: string) :Promise<any> {
                 }
                 return resolve(data);
             }
-            const select = 'url domain enableClient firstVisit filterOwnIP filterTeamIP user active';
-            const query = {
-                $or: [
-                    { _id: blogId },
-                    { trackingId: blogId }
-                ]
-            };
-            const blog = await db.Blog.findOne(query).select(select).lean();
+            // const select = 'url domain enableClient firstVisit filterOwnIP filterTeamIP user active';
+            // const query = {
+            //     $or: [
+            //         { _id: blogId },
+            //         { trackingId: blogId }
+            //     ]
+            // };
+            // const blog = await mongodb.Blog.findOne(query).select(select).lean();
+						const blog = await db('blogs')
+							.select('url', 'domain', 'enableClient', 'firstVisit', 'filterOwnIP', 'filterTeamIP', 'user', 'active')
+							.where('id', blogId)
+							.orWhere('trackingId', blogId)
+							.first();
             if (blog && blog.firstVisit) {
                 cache.setex(key, expiration, JSON.stringify(blog));
             }

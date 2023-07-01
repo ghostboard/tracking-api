@@ -11,7 +11,7 @@
     "bad": "npm run build && npm run deploy",
     "vl": "eb appversion --profile ghostboard",
     "rollback": "eb deploy -l <version-label> --profile ghostboard",
-    "test": "jest",
+    "test": "jest --verbose false",
     "merge-prod": "git checkout master && git merge dev && git push && git checkout dev;",
     "push-tag": "git push --tags",
     "tag-major": "npm run merge-prod && npm version major && npm run push-tag",
@@ -56,15 +56,15 @@
     "ua-parser-js": "^0.7.35"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^27.5.2",
     "@types/mongoose": "^5.11.97",
-    "@types/node": "^16.11.26",
+    "@types/node": "^16.18.38",
     "@types/pino": "^6.3.12",
     "@types/redis": "^2.8.32",
     "@types/ua-parser-js": "^0.7.36",
     "jest": "^27.5.1",
-    "nodemon": "^2.0.15",
-    "ts-jest": "^27.1.4",
-    "typescript": "^4.6.3"
+    "nodemon": "^2.0.22",
+    "ts-jest": "^27.1.5",
+    "typescript": "^4.9.5"
   }
 }

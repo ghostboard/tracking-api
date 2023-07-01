@@ -8,7 +8,8 @@ import isDesktop from "../../lib/views/isDesktop"
 import updateTime from "../../services/visit/updateTime";
 
 export default async function heartbeat(viewId: string, time: number, event: string, useragent: string): Promise<any> {
-    const isValidId = mongoose.Types.ObjectId.isValid(viewId)
+    // FIXME id crypto when removing mongo
+		const isValidId = mongoose.Types.ObjectId.isValid(viewId)
     if (!isValidId) {
         return { code: 401, message: 'Invalid viewId' }
     }
@@ -25,9 +26,9 @@ export default async function heartbeat(viewId: string, time: number, event: str
     }
     if (time > 0) {
         const now = moment();
-        const query = {
-            _id: viewId
-        };
+        // const query = {
+        //     _id: viewId
+        // };
         const update: any = {
             time
         };

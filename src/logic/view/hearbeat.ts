@@ -1,5 +1,5 @@
 import moment from "moment"
-import mongoose from "mongoose"
+// import mongoose from "mongoose"
 import VIEWS_CONFIG from '../../config/views'
 import getView from "../../lib/cache/live/getView"
 import onQuitView from "../../lib/cache/live/onQuitView"
@@ -8,11 +8,14 @@ import isDesktop from "../../lib/views/isDesktop"
 import updateTime from "../../services/visit/updateTime";
 
 export default async function heartbeat(viewId: string, time: number, event: string, useragent: string): Promise<any> {
-    // FIXME id crypto when removing mongo
-		const isValidId = mongoose.Types.ObjectId.isValid(viewId)
-    if (!isValidId) {
-        return { code: 401, message: 'Invalid viewId' }
-    }
+		const isValidId = viewId && viewId.length > 12;
+		if (!isValidId) {
+		    return { code: 401, message: 'Invalid viewId' }
+		}
+		// const isValidId = mongoose.Types.ObjectId.isValid(viewId)
+    // if (!isValidId) {
+    //     return { code: 401, message: 'Invalid viewId' }
+    // }
 
     let visit: any = await getView(viewId)
     if (!visit) {

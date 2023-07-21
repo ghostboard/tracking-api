@@ -1,5 +1,5 @@
 require('dotenv').config()
-import mongodb from '../../sources/mongodb'
+// import mongodb from '../../sources/mongodb'
 import db from '../../sources/postgres'
 import { findPostBySlug } from './getPostBySlug'
 

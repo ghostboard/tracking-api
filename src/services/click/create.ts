@@ -2,7 +2,7 @@ import * as crypto from "crypto";
 import mongoose from "mongoose"
 import turboGeoip from 'turbo-geoip-country'
 import RefererParser from 'referer-parser'
-import mongoDb from '../../models'
+// import mongoDb from '../../models'
 import db from "../../sources/postgres"
 import isMobile from "../../lib/views/isMobile";
 import isTablet from "../../lib/views/isTablet";
@@ -61,7 +61,6 @@ export default async function (blogId: string, origin: string, target: string, t
 
 		const sqlClick = {...newClick};
 		sqlClick.id = crypto.randomBytes(16).toString("hex")
-		db('clicks').insert(sqlClick).then().catch((e) => console.log('> clickCreate', e))
-
-		return mongoDb.Click.create(newClick);
+		return db('clicks').insert(sqlClick);
+		// return mongoDb.Click.create(newClick);
 }

@@ -1,12 +1,13 @@
-import mongodb from '../../models'
+import moment from 'moment'
+// import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
-import escapeStringRegexp from '../util/escapeStringRegexp'
+// import escapeStringRegexp from '../util/escapeStringRegexp'
 import db from "../../sources/postgres"
 
 export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{
     const key = `blog:${blogId}:post_by_slug:${slug}`;
-    const expiration = 120 * 60;
-    const notFoundExpiration = 5*60;
+    const expiration = moment.duration(1, 'days').asSeconds();
+    const notFoundExpiration = moment.duration(5, 'minutes').asSeconds();
     return new Promise((resolve, reject) => {
         cache.get(key, async(err, item) => {
             if (err) {
@@ -34,9 +35,8 @@ export async function findPostBySlug(blogId: string, slug: string) {
 	// 	url: new RegExp(escapeStringRegexp(slug), "g")
 	// };
 	// return mongodb.Post.findOne(query).select(select).lean();
-
 	return db('posts').select('id', 'firstVisit', 'url')
 		.where('blog', blogId)
-		.whereILike('url', slug)
-		.first()
+		.whereILike('url', `%${slug}%`)
+		.first();
 }

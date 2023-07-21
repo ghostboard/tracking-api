@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV == 'production'
 const fastify = Fastify({
     logger: { prettyPrint: !isProduction },
     trustProxy: true
-})
+});
 
 const start = async () => {
     try {
@@ -21,7 +21,7 @@ const start = async () => {
         fastify.register(require('fastify-no-icon'))
         fastify.register(require('fastify-formbody'))
         fastify.register(require('fastify-jwt'), { secret: process.env.JWT_SECRET })
-        fastify.register(require('./sources/mongodb'))
+        // fastify.register(require('./sources/mongodb'))
         fastify.register(require('./sources/redis'))
         fastify.register(require('./sources/socketio'))
         fastify.decorate('authJWT', verifyJWT)

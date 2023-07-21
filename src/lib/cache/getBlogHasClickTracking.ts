@@ -1,5 +1,5 @@
 import moment from 'moment'
-import mongodb from '../../models'
+// import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
 import db from "../../sources/postgres"
 
@@ -33,15 +33,25 @@ export default async function getBlogHasClickTracking(blogId: string) :Promise<a
 						const user = await db('users')
 							.select('trialDays', 'plan')
 		          .where('id', blog.user).first();
-						const plan = await db('plans').where('id', user.plan).first();
-						// const user = await mongodb.User.findById(blog.user).select('trialDays plan').populate('plan').lean();
-	          const daysFromFirstVisit = moment().diff(moment(blog.firstVisit), 'days');
-	          const trialDaysLeft = user.trialDays - daysFromFirstVisit;
-						const isFreeTrial = trialDaysLeft >= 0;
-						const planHasClicks = plan?.hasClicks === true;
-						const output = isFreeTrial || planHasClicks;
-						cache.setex(key, expiration, JSON.stringify(output));
-            resolve(output);
+	          let output = true;
+						try {
+							const hasPlan = user && user.plan;
+							if (!hasPlan) {
+								console.log('>> error user/plan not found', blogId, blog, user);
+							}
+							const plan = await db('plans').where('id', user.plan).first();
+							// const user = await mongodb.User.findById(blog.user).select('trialDays plan').populate('plan').lean();
+							const daysFromFirstVisit = moment().diff(moment(blog.firstVisit), 'days');
+							const trialDaysLeft = user.trialDays - daysFromFirstVisit;
+							const isFreeTrial = trialDaysLeft >= 0;
+							const planHasClicks = plan?.hasClicks === true;
+							output = isFreeTrial || planHasClicks;
+							cache.setex(key, expiration, JSON.stringify(output));
+							resolve(output);
+						} catch (e) {
+							console.error('>> getBlogHasClickTracking', blogId, e);
+							resolve(true);
+						}
         });
     });
 }

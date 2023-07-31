@@ -1,5 +1,4 @@
 import moment from 'moment'
-// import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
 import db from "../../sources/postgres"
 
@@ -18,21 +17,14 @@ export default async function getBlogHasClickTracking(blogId: string) :Promise<a
                 }
                 return resolve(data);
             }
-            // const select = 'user firstVisit';
-            // const query = {
-            //     $or: [
-            //         { _id: blogId },
-            //         { trackingId: blogId }
-            //     ]
-            // };
-            // const blog = await mongodb.Blog.findOne(query).select(select).lean();
 						const blog = await db('blogs')
 							.select('user', 'firstVisit')
 							.where('id', blogId)
 							.orWhere('trackingId', blogId).first();
 						const user = await db('users')
 							.select('trialDays', 'plan')
-		          .where('id', blog.user).first();
+		          .where('id', blog.user)
+							.first();
 	          let output = true;
 						try {
 							const hasPlan = user && user.plan;
@@ -40,7 +32,6 @@ export default async function getBlogHasClickTracking(blogId: string) :Promise<a
 								console.log('>> error user/plan not found', blogId, blog, user);
 							}
 							const plan = await db('plans').where('id', user.plan).first();
-							// const user = await mongodb.User.findById(blog.user).select('trialDays plan').populate('plan').lean();
 							const daysFromFirstVisit = moment().diff(moment(blog.firstVisit), 'days');
 							const trialDaysLeft = user.trialDays - daysFromFirstVisit;
 							const isFreeTrial = trialDaysLeft >= 0;

@@ -1,15 +1,13 @@
 import * as crypto from "crypto";
-import mongoose from "mongoose"
 import turboGeoip from 'turbo-geoip-country'
 import RefererParser from 'referer-parser'
-// import mongoDb from '../../models'
 import db from "../../sources/postgres"
 import isMobile from "../../lib/views/isMobile";
 import isTablet from "../../lib/views/isTablet";
 import UAParser from "ua-parser-js";
 
 export default async function (blogId: string, origin: string, target: string, title: string, text: string, image: string, useragent: string, ip: string) {
-    const isValidId = mongoose.Types.ObjectId.isValid(blogId)
+    const isValidId = blogId?.length > 16;
     if (!isValidId) {
         return { done: false, message: 'Invalid blogId' }
     }
@@ -62,5 +60,4 @@ export default async function (blogId: string, origin: string, target: string, t
 		const sqlClick = {...newClick};
 		sqlClick.id = crypto.randomBytes(16).toString("hex")
 		return db('clicks').insert(sqlClick);
-		// return mongoDb.Click.create(newClick);
 }

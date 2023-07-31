@@ -1,5 +1,4 @@
 import moment from "moment"
-// import mongoose from "mongoose"
 import VIEWS_CONFIG from '../../config/views'
 import getView from "../../lib/cache/live/getView"
 import onQuitView from "../../lib/cache/live/onQuitView"
@@ -12,10 +11,6 @@ export default async function heartbeat(viewId: string, time: number, event: str
 		if (!isValidId) {
 		    return { code: 401, message: 'Invalid viewId' }
 		}
-		// const isValidId = mongoose.Types.ObjectId.isValid(viewId)
-    // if (!isValidId) {
-    //     return { code: 401, message: 'Invalid viewId' }
-    // }
 
     let visit: any = await getView(viewId)
     if (!visit) {

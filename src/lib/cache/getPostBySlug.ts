@@ -1,7 +1,5 @@
 import moment from 'moment'
-// import mongodb from '../../models'
 import { client as cache } from '../../sources/redis'
-// import escapeStringRegexp from '../util/escapeStringRegexp'
 import db from "../../sources/postgres"
 
 export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{
@@ -29,12 +27,6 @@ export default async function getPostBySlug(blogId: string, slug: string) :Promi
 }
 
 export async function findPostBySlug(blogId: string, slug: string) {
-	// const select = '_id firstVisit url';
-	// const query = {
-	// 	blog: blogId,
-	// 	url: new RegExp(escapeStringRegexp(slug), "g")
-	// };
-	// return mongodb.Post.findOne(query).select(select).lean();
 	return db('posts').select('id', 'firstVisit', 'url')
 		.where('blog', blogId)
 		.whereILike('url', `%${slug}%`)

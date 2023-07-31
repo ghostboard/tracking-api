@@ -32,7 +32,7 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
 			device = 'mobile';
 		}
     const newVisit: any = {
-        blog: params.blogId || params.blog.id || params.blog._id.toString(),
+        blog: params.blogId || params.blog.id,
         url: fullURL,
         slug: params.slug,
 	      ua: useragent,
@@ -49,6 +49,9 @@ export default async function saveView(params: any, req: FastifyRequest): Promis
         ip: anonymIP(ip),
         created: moment().toDate()
     };
+		if (!newVisit.blog) {
+			console.error('lib.views.saveView() no blog id', params, params.blog);
+		}
     if (params.postId) {
         newVisit.post = params.postId;
     }

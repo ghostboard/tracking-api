@@ -14,10 +14,13 @@ export default async function getBlogForVisits(blogId: string) :Promise<any> {
                 if (typeof data === 'string') {
                     data = JSON.parse(data)
                 }
-                return resolve(data);
+								const hasBlogId = data && data.id;
+								if (hasBlogId) {
+									return resolve(data);
+								}
             }
 						const blog = await db('blogs')
-							.select('url', 'domain', 'enableClient', 'firstVisit', 'filterOwnIP', 'filterTeamIP', 'user', 'active')
+							.select('id', 'url', 'domain', 'newDomain', 'enableClient', 'firstVisit', 'filterOwnIP', 'filterTeamIP', 'user', 'active')
 							.where('id', blogId)
 							.orWhere('trackingId', blogId)
 							.first();

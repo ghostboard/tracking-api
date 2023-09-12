@@ -45,8 +45,10 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
             return res.code(204).send({ message: "Please reactive your blog on Ghostboard" });
         }
         const dontMatchDomain = blog.domain && referer && referer.indexOf(blog.domain) === -1;
+				const dontMatchNewDomain = blog.newDomain && referer && !referer.includes(blog.newDomain);
         const isGhostPro = referer && referer.includes('.ghost.io');
-        const isWrong = dontMatchDomain && !isGhostPro;
+				const dontMatchAnyDomain = dontMatchDomain && dontMatchNewDomain;
+        const isWrong = dontMatchAnyDomain && !isGhostPro;
         if (isWrong) {
             return res.code(204).send({ message: `Not allowed to track from ${referer}` });
         }

@@ -27,9 +27,10 @@ RUN npm run build
 RUN npm ci --omit=dev
 
 FROM node:20-alpine
+RUN apk add --update curl
 WORKDIR /usr/src/api
 COPY --from=build /usr/src/api/node_modules /usr/src/api/node_modules
 COPY --from=build /usr/src/api/build /usr/src/api/build
-EXPOSE 8080
-HEALTHCHECK CMD curl --fail http://127.0.0.1:8080/ping || exit 1
+EXPOSE 8081
+HEALTHCHECK CMD curl --fail http://127.0.0.1:8081/ping || exit 1
 CMD ["node", "./build/server.js"]

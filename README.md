@@ -3,6 +3,7 @@
 ## stack
 
 fastify + typescript + mongoose
+beanstalk: eb create tracking-api-18
 
 ## Dependencies
 

@@ -1,4 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
+import libIP from "ipaddr.js"
 import getBlogFilters from "../../../lib/cache/getBlogFilters"
 import getBlogForVisits from "../../../lib/cache/getBlogForVisits"
 import getBlogHasClickTracking from "../../../lib/cache/getBlogHasClickTracking"
@@ -40,7 +41,7 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         }
         const slug = getSlug(blog, path, true, true);
         if (isPreview(slug)) {
-            return res.code(204).send();
+            return res.code(204).send(`Slug preview`);
         }
         const enabled = blog && blog.enableClient !== false;
         if (!enabled) {
@@ -54,8 +55,14 @@ export async function handler(req: FastifyRequest, res: FastifyReply): Promise<F
         if (isWrong) {
             return res.code(204).send({ message: `Not allowed to track from ${referer}` });
         }
-        const blockIP = ipFilters.includes(userIP);
+				const isPrivateIP = libIP.parse(userIP).range() === 'private'
+        const blockIP = !isPrivateIP && ipFilters.includes(userIP);
         if (blockIP) {
+					console.log(`>> block IP ${userIP} ${ipFilters} isPrivate=${isPrivateIP}`)
+	        console.log('>> req.ip', req.ip)
+	        console.log('>> req.ips', req.ips)
+	        console.log('>> req.headers[\'x-forwarded-for\']', req.headers['x-forwarded-for'])
+	        console.log(`>> req.headers['X-Real-IP'] = ${req.headers['x-real-ip']} / ${req.headers['X-Real-IP']}`)
             return res.code(204).send(false);
         }
 

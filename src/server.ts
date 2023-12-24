@@ -25,7 +25,7 @@ const start = async () => {
         fastify.register(require('./sources/socketio'))
         fastify.decorate('authJWT', verifyJWT)
         await router(fastify)
-        await fastify.listen(process.env.PORT || 4000)
+        await fastify.listen(process.env.PORT || 4000, '0.0.0.0')
         fastify.log.info('Server started successfully ✅')
     } catch (err) {
         fastify.log.error(err)

@@ -12,7 +12,6 @@ describe("findPostBySlug", () => {
 		const blogId = '5a8576505cb529044c3efd0d';
 		const slug = '/blog/how-to-update-bitnami-ghost';
 		const out = await findPostBySlug(blogId, slug)
-		console.log('>> out1', out)
 		expect(out).toBeDefined()
 		expect(out).toHaveProperty('id')
 		expect(out).toHaveProperty('url')

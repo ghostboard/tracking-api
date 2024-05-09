@@ -1,90 +1,99 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
-import getBlogFilters from "../../../lib/cache/getBlogFilters"
-import getBlogForVisits from "../../../lib/cache/getBlogForVisits"
-import getPostBySlug from "../../../lib/cache/getPostBySlug"
-import getSlug from "../../../lib/post/getSlug"
-import isBot from "../../../lib/views/isBot"
-import isPreview from "../../../lib/views/isPreview"
-import saveView from "../../../lib/views/saveView"
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import getBlogFilters from '../../../lib/cache/getBlogFilters';
+import getBlogForVisits from '../../../lib/cache/getBlogForVisits';
+import getPostBySlug from '../../../lib/cache/getPostBySlug';
+import getSlug from '../../../lib/post/getSlug';
+import isBot from '../../../services/visit/isBot';
+import isPreview from '../../../lib/views/isPreview';
+import saveView from '../../../lib/views/saveView';
 
-export const method = 'GET'
-export const url = '/noscript/:id/pixel.gif'
+export const method = 'GET';
+export const url = '/noscript/:id/pixel1.gif';
 
-export async function handler(req: FastifyRequest, res: FastifyReply): Promise<number> {
-    const path = req.headers["referer"]
-    if (!path) {
-        return 0
-    }
-    const params: { [index: string]: any } = (req.params as object);
-    const hasBlogId = params && params.id;
-    if (!hasBlogId) {
-        return res.code(401).send(0);
-    }
-    const useragent = req.headers["user-agent"]
-    if (useragent && isBot(useragent)) {
-        return res.code(200).send(0);
-    }
-    const blogId = params.id
-    const userIp = req.ip
-    const [ipFilters, blog] = await Promise.all([
-        getBlogFilters(blogId),
-        getBlogForVisits(blogId)
-    ]);
-    if (!blog) {
-        return res.code(404).send({ message: `Blog not found with ID=${blogId}` })
-    }
-    const slug = getSlug(blog, path, true, true)
-    if (isPreview(slug)) {
-        return res.code(200).send(0);
-    }
-    const enabled = blog && (blog as any).enableClient !== false
-    if (!enabled) {
-        return res.code(403).send({ message: "Please reactive your blog on Ghostboard" })
-    }
+export async function handler(
+  req: FastifyRequest,
+  res: FastifyReply
+): Promise<number> {
+  const path = req.headers['referer'];
+  if (!path) {
+    return 0;
+  }
+  const params: { [index: string]: any } = req.params as object;
+  const hasBlogId = params && params.id;
+  if (!hasBlogId) {
+    return res.code(401).send(0);
+  }
+  const useragent = req.headers['user-agent'];
+  if (useragent && isBot(useragent)) {
+    return res.code(200).send(0);
+  }
+  const blogId = params.id;
+  const userIp = req.ip;
+  const [ipFilters, blog] = await Promise.all([
+    getBlogFilters(blogId),
+    getBlogForVisits(blogId),
+  ]);
+  if (!blog) {
+    return res.code(404).send({ message: `Blog not found with ID=${blogId}` });
+  }
+  const slug = getSlug(blog, path, true, true);
+  if (isPreview(slug)) {
+    return res.code(200).send(0);
+  }
+  const enabled = blog && (blog as any).enableClient !== false;
+  if (!enabled) {
+    return res
+      .code(403)
+      .send({ message: 'Please reactive your blog on Ghostboard' });
+  }
 
-    const referer = req.headers["referer"]
-    const dontMatchDomain = blog.domain && referer && referer.indexOf(blog.domain) === -1
-    const isGhostPro = referer && referer.includes('.ghost.io')
-    const isWrong = dontMatchDomain && !isGhostPro
-    if (isWrong) {
-        return res.code(403).send({ message: `Not allowed to track from ${referer}` })
-    }
-    const blockIP = ipFilters.includes(userIp)
-    if (blockIP) {
-        return res.code(200).send(0)
-    }
+  const referer = req.headers['referer'];
+  const dontMatchDomain =
+    blog.domain && referer && referer.indexOf(blog.domain) === -1;
+  const isGhostPro = referer && referer.includes('.ghost.io');
+  const isWrong = dontMatchDomain && !isGhostPro;
+  if (isWrong) {
+    return res
+      .code(403)
+      .send({ message: `Not allowed to track from ${referer}` });
+  }
+  const blockIP = ipFilters.includes(userIp);
+  if (blockIP) {
+    return res.code(200).send(0);
+  }
 
-    const postSlug = getSlug(blog, path, true)
-    let post: any = null
-    let postId = null
-    const isHome = !postSlug || postSlug === "/"
-    if (!isHome) {
-        // search
-        post = await getPostBySlug(blogId, postSlug)
-        postId = post && (post.id || post._id) ? (post.id || post._id.toString()) : null
-    }
+  const postSlug = getSlug(blog, path, true);
+  let post: any = null;
+  let postId = null;
+  const isHome = !postSlug || postSlug === '/';
+  if (!isHome) {
+    // search
+    post = await getPostBySlug(blogId, postSlug);
+    postId =
+      post && (post.id || post._id) ? post.id || post._id.toString() : null;
+  }
 
-    let lang = '';
-    if (req.headers['accept-language']) {
-        lang = req.headers['accept-language'].split(',')[0].split('-')[0] || '';
-    }
-    const visitParams = {
-        blog,
-        post,
-        slug,
-        postId,
-        lang,
-        referer,
-        isNoscript: true
-    };
-    saveView(visitParams, req).then();
-    return res.code(200).send()
+  let lang = '';
+  if (req.headers['accept-language']) {
+    lang = req.headers['accept-language'].split(',')[0].split('-')[0] || '';
+  }
+  const visitParams = {
+    blog,
+    post,
+    slug,
+    postId,
+    lang,
+    referer,
+    isNoscript: true,
+  };
+  saveView(visitParams, req).then();
+  return res.code(200).send();
 }
 
 export default function (fastify: FastifyInstance) {
-    fastify.route({
-        method,
-        url,
-        handler
-    })
+  fastify.route({
+    method,
+    url,
+    handler,
+  });
 }

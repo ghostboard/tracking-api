@@ -1,14 +1,14 @@
-import { client as cache } from '../../../sources/redis'
+import { client as cache } from '../../../sources/redis';
 
 export default async function decReferer(blogId: string, country: string) {
-    const key = `live:blog:${blogId}:referers`;
+  const key = `live:blog:${blogId}:referers`;
 
-    return new Promise((resolve, reject) => {
-        cache.zincrby(key, -1, country, function (e: any, reply: string) {
-            if (e) {
-                return reject(e);
-            }
-            return resolve(reply);
-        });
+  return new Promise((resolve, reject) => {
+    cache.zincrby(key, -1, country, function (e: any, reply: string) {
+      if (e) {
+        return reject(e);
+      }
+      return resolve(reply);
     });
+  });
 }

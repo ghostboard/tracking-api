@@ -1,11 +1,11 @@
-import { client as cache } from '../../../sources/redis'
+import { client as cache } from '../../../sources/redis';
 
 export default async function deleteUrl(blogId: string, url: string) {
-    const key = `live:blog:${blogId}:urls`;
+  const key = `live:blog:${blogId}:urls`;
 
-    return new Promise((resolve, reject) => {
-        cache.zrem(key, url, function (reply) {
-            return resolve(reply);
-        });
+  return new Promise((resolve, reject) => {
+    cache.zrem(key, url, function (reply) {
+      return resolve(reply);
     });
+  });
 }

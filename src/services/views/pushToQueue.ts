@@ -1,0 +1,22 @@
+import TrackingViewQueue from '../../sources/queues/TrackingViewQueue';
+import logger from '../../sources/logger';
+
+export default async function pushToQueue(input): Promise<any> {
+  try {
+    const item = {
+      ...input,
+      created: new Date(),
+    };
+    const jobId = `trackingView_${input.blogId}_${input.viewId}_${Date.now()}`;
+    const options = {
+      jobId,
+      removeOnComplete: true,
+      removeOnFail: 2,
+    };
+    return await TrackingViewQueue.add(jobId, item, options);
+  } catch (error: any) {
+    logger.error(
+      `errors.pushToQueue(${JSON.stringify(input)}) Error = ${error?.trace || error}`
+    );
+  }
+}

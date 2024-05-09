@@ -1,5 +1,7 @@
-import db from "../../sources/postgres"
+import db from '../../sources/postgres';
 
 export default async function (blogId: string, update: object) {
-		return db('blogs').where('id', blogId).update({...update});
+  return db('blogs')
+    .where('id', blogId)
+    .update({ ...update });
 }

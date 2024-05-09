@@ -1,22 +1,3 @@
-#FROM node:18-alpine
-#
-#RUN apk add --update curl
-#
-#WORKDIR /usr/src/api
-#
-#COPY package*.json ./
-#
-#RUN npm ci --omit=dev
-#
-#COPY . .
-#
-#EXPOSE 8080
-#
-#HEALTHCHECK CMD curl --fail http://127.0.0.1:8080/ping || exit 1
-#
-#CMD [ "node", "build/server.js" ]
-
-
 FROM node:20-alpine AS build
 
 WORKDIR /usr/src/api

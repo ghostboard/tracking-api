@@ -1,10 +1,10 @@
-import knex from 'knex'
+import knex from 'knex';
 
-const connection = process.env.SQLDB_URL
+const connection = process.env.SQLDB_URL;
 const config = {
-	client: 'postgres',
-	connection
-}
+  client: 'postgres',
+  connection,
+};
 
-const client = knex(config)
-export default client
+const client = knex(config);
+export default client;

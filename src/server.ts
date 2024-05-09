@@ -1,35 +1,20 @@
-import dotenv from 'dotenv'
-import { fastify as Fastify } from 'fastify'
-import SECURITY_CONF from './config/security'
-import router from './router'
-import verifyJWT from './controllers/verifyJWT'
-dotenv.config()
+import build from './api';
 
-const isProduction = process.env.NODE_ENV == 'production'
-const fastify = Fastify({
-    logger: { prettyPrint: !isProduction },
-    trustProxy: true
-});
-
-const start = async () => {
-    try {
-        if (isProduction) {
-            require('@newrelic/fastify');
-        }
-        fastify.register(require('fastify-cors'), { origin: '*' })
-        fastify.register(require('fastify-helmet'), SECURITY_CONF.helmet)
-        fastify.register(require('fastify-no-icon'))
-        fastify.register(require('fastify-formbody'))
-        fastify.register(require('fastify-jwt'), { secret: process.env.JWT_SECRET })
-        fastify.register(require('./sources/redis'))
-        fastify.register(require('./sources/socketio'))
-        fastify.decorate('authJWT', verifyJWT)
-        await router(fastify)
-        await fastify.listen(process.env.PORT || 4000, '0.0.0.0')
-        fastify.log.info('Server started successfully ✅')
-    } catch (err) {
-        fastify.log.error(err)
-        process.exit(1)
+const isProduction = process.env.NODE_ENV == 'production';
+export default async function start() {
+  let api;
+  try {
+    if (isProduction) {
+      require('@newrelic/fastify');
     }
-};
-start()
+    api = await build();
+    await api.listen(process.env.PORT || 4000, '0.0.0.0');
+    api.log.info('API started successfully ✅');
+    return api;
+  } catch (err) {
+    api?.log?.error(err);
+    process.exit(1);
+  }
+}
+
+start();

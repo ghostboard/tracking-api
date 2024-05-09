@@ -1,34 +1,38 @@
-import moment from 'moment'
-import { client as cache } from '../../sources/redis'
-import db from "../../sources/postgres"
+import moment from 'moment';
+import { client as cache } from '../../sources/redis';
+import db from '../../sources/postgres';
 
-export default async function getPostBySlug(blogId: string, slug: string) :Promise<any>{
-    const key = `blog:${blogId}:post_by_slug:${slug}`;
-    const expiration = moment.duration(1, 'days').asSeconds();
-    const notFoundExpiration = moment.duration(5, 'minutes').asSeconds();
-    return new Promise((resolve, reject) => {
-        cache.get(key, async(err, item) => {
-            if (err) {
-                return reject(err);
-            }
-            if (item) {
-                return resolve(JSON.parse(item));
-            }
-						const post = await findPostBySlug(blogId, slug);
-            const isValid = post && post.url && post.url.includes(slug);
-            if (isValid) {
-                cache.setex(key, expiration, JSON.stringify(post));
-            } else {
-                cache.setex(key, notFoundExpiration, '{}');
-            }
-            resolve(post);
-        });
+export default async function getPostBySlug(
+  blogId: string,
+  slug: string
+): Promise<any> {
+  const key = `blog:${blogId}:post_by_slug:${slug}`;
+  const expiration = moment.duration(1, 'days').asSeconds();
+  const notFoundExpiration = moment.duration(5, 'minutes').asSeconds();
+  return new Promise((resolve, reject) => {
+    cache.get(key, async (err, item) => {
+      if (err) {
+        return reject(err);
+      }
+      if (item) {
+        return resolve(JSON.parse(item));
+      }
+      const post = await findPostBySlug(blogId, slug);
+      const isValid = post && post.url && post.url.includes(slug);
+      if (isValid) {
+        cache.setex(key, expiration, JSON.stringify(post));
+      } else {
+        cache.setex(key, notFoundExpiration, '{}');
+      }
+      resolve(post);
     });
+  });
 }
 
 export async function findPostBySlug(blogId: string, slug: string) {
-	return db('posts').select('id', 'firstVisit', 'url')
-		.where('blog', blogId)
-		.whereILike('url', `%${slug}%`)
-		.first();
+  return db('posts')
+    .select('id', 'firstVisit', 'url')
+    .where('blog', blogId)
+    .whereILike('url', `%${slug}%`)
+    .first();
 }

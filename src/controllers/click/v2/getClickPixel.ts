@@ -4,7 +4,7 @@ import trackClick from '../../../core/clicks/trackClick';
 export default function (fastify: FastifyInstance) {
   fastify.route({
     method: 'GET',
-    url: '/v2/blogs/:blogId/clicks',
+    url: '/v2/clicks/:blogId',
     handler: async function (
       req: FastifyRequest,
       res: FastifyReply

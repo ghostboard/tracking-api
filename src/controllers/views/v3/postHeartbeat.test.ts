@@ -13,7 +13,7 @@ afterAll(() => {
   api?.close()?.then();
 });
 
-describe('POST /v1/views/{viewId}/heartbeat', () => {
+describe('POST /v3/views/{viewId}/heartbeat', () => {
   const pushToHeartbeatQueueSpy = jest.spyOn(pushToHeartbeatQueue, 'default');
   const useragent =
     'Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion';
@@ -21,7 +21,7 @@ describe('POST /v1/views/{viewId}/heartbeat', () => {
   test('should not track the heartbeat if viewId is not valid', async () => {
     const response = await api.inject({
       method: 'POST',
-      url: '/v1/views/test/heartbeat',
+      url: '/v3/views/test/heartbeat',
       headers: {
         'User-Agent': useragent,
       },
@@ -39,7 +39,7 @@ describe('POST /v1/views/{viewId}/heartbeat', () => {
       'Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion';
     const response = await api.inject({
       method: 'POST',
-      url: '/v1/views/12345678901234/heartbeat',
+      url: '/v3/views/12345678901234/heartbeat',
       headers: {
         'User-Agent': useragent,
       },
@@ -65,7 +65,7 @@ describe('POST /v1/views/{viewId}/heartbeat', () => {
     const body = formData.getBuffer();
     const response = await api.inject({
       method: 'POST',
-      url: '/v1/views/12345678901234/heartbeat',
+      url: '/v3/views/12345678901234/heartbeat',
       headers: {
         'User-Agent': useragent,
         'Content-Type': 'application/x-www-form-urlencoded',

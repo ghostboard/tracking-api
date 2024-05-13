@@ -10,7 +10,7 @@ afterAll(() => {
   api?.close()?.then();
 });
 
-describe('GET /v2/blogs/{blogId}/clicks', () => {
+describe('GET /v2/clicks/{blogId}', () => {
   test('should track the click', async () => {
     jest.mock('../../../services/clicks/pushToQueue', () => {
       return true;
@@ -18,7 +18,7 @@ describe('GET /v2/blogs/{blogId}/clicks', () => {
     const pushToQueue = require('../../../services/clicks/pushToQueue');
     const response = await api.inject({
       method: 'GET',
-      url: '/v2/blogs/test/clicks?l=test&a=test',
+      url: '/v2/clicks/test?l=test&a=test',
       headers: {
         'User-Agent': 'test',
         Referer: 'test',
@@ -38,7 +38,7 @@ describe('GET /v2/blogs/{blogId}/clicks', () => {
     const TrackingClickQueue = require('../../../sources/queues/TrackingClickQueue');
     const response = await api.inject({
       method: 'GET',
-      url: '/v2/blogs/test/clicks',
+      url: '/v2/clicks/test',
     });
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual('');

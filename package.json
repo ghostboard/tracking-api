@@ -33,7 +33,7 @@
   "dependencies": {
     "@newrelic/fastify": "github:newrelic-experimental/newrelic-javascript-fastify",
     "@socket.io/redis-emitter": "^4.1.1",
-    "bullmq": "^5.7.2",
+    "bullmq": "^5.7.8",
     "fast-glob": "^3.3.2",
     "fastify": "^3.29.5",
     "fastify-cors": "^6.1.0",

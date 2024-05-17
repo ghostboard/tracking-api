@@ -7,7 +7,7 @@ export default async function pushToErrorQueue(input) {
       ...input,
       created: new Date(),
     };
-    const jobId = `trackingClick:${Date.now()}:${input.blogId}:${input.location}`;
+    const jobId = `trackingClick:${Date.now()}:${input.blogId}:${input.origin}`;
     const options = {
       jobId,
       removeOnComplete: true,

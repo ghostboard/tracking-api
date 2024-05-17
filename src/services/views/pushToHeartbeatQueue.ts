@@ -7,17 +7,11 @@ export default async function pushToHeartbeatQueue(input): Promise<any> {
       ...input,
       created: new Date(),
     };
-    const jobId = `trackingHeartbeat_${input.viewId}_${input.time}`;
-    const existingJob = await TrackingViewHeartbeatQueue.getJob(jobId);
-    if (existingJob) {
-      await existingJob.remove();
-    }
-
+    const jobId = `trackingHeartbeat_${input.viewId}_${input.time}_${Date.now()}`;
     const options = {
       jobId,
       removeOnComplete: true,
-      removeOnFail: 2,
-      delay: 150,
+      removeOnFail: 2
     };
     return await TrackingViewHeartbeatQueue.add(jobId, item, options);
   } catch (error: any) {

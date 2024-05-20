@@ -12,7 +12,7 @@ afterAll(() => {
   api?.close()?.then();
 });
 
-describe('GET /views/{viewId}/heartbeat.gif', () => {
+describe('GET /views/{viewId}/heartbeat', () => {
   const pushToHeartbeatQueueSpy = jest.spyOn(pushToHeartbeatQueue, 'default');
   const useragent =
     'Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion';
@@ -20,7 +20,7 @@ describe('GET /views/{viewId}/heartbeat.gif', () => {
   test('should not track the heartbeat view if viewId is not valid', async () => {
     const response = await api.inject({
       method: 'GET',
-      url: '/views/test/heartbeat.gif',
+      url: '/views/test/heartbeat',
       headers: {
         'User-Agent': useragent,
       },
@@ -37,7 +37,7 @@ describe('GET /views/{viewId}/heartbeat.gif', () => {
       'Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion';
     const response = await api.inject({
       method: 'GET',
-      url: '/views/12345678901234/heartbeat.gif',
+      url: '/views/12345678901234/heartbeat',
       headers: {
         'User-Agent': useragent,
       },

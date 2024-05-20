@@ -33,7 +33,7 @@ export default function (fastify: FastifyInstance) {
         return res.code(200).send(output);
       } catch (error: any) {
         logger.error(
-          `Error views/${blogId} Body=${JSON.stringify(body)} Error=${error.trace || error}`
+          `Error views/${blogId} Body=${JSON.stringify(body)} UA=${useragent} IP=${userIp} Error=${error.trace || error}`
         );
         const { statusCode = 500, message } = error;
         const output = message || '';

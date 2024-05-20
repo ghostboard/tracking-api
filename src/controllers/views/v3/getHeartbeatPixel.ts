@@ -4,7 +4,7 @@ import trackHeartbeat from '../../../core/views/trackHeartbeat';
 export default function (fastify: FastifyInstance) {
   fastify.route({
     method: 'GET',
-    url: '/views/:viewId/heartbeat.gif',
+    url: '/views/:viewId/heartbeat',
     handler: async function (
       req: FastifyRequest,
       res: FastifyReply

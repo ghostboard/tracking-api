@@ -28,7 +28,7 @@ export default async function trackView(
   const isUseragentBot = useragent && isBot(useragent);
   if (isUseragentBot) {
     const error: any = new Error('USERAGENT_IS_BOT');
-    error.statusCode = 204;
+    error.statusCode = 202;
     throw error;
   }
   const [ipFilters, blog, blogHasClickTracking] = await Promise.all([
@@ -45,22 +45,22 @@ export default async function trackView(
   const slug = getSlug(blog, path, true, true);
   if (isPreview(slug)) {
     const error: any = new Error('IS_PREVIEW');
-    error.statusCode = 204;
+    error.statusCode = 202;
     throw error;
   }
   const enabled = blog && blog.enableClient !== false;
   if (!enabled) {
     const error: any = new Error('INACTIVE_BLOG');
-    error.statusCode = 204;
+    error.statusCode = 400;
     error.description = 'Please reactivate your blog on Ghostboard.io';
     throw error;
   }
   const domainsMatch = blog.domain && requestReferer && requestReferer.includes(blog.domain);
   const isGhostPro = requestReferer && requestReferer.includes('.ghost.io');
-  const isWrong = !domainsMatch && !isGhostPro;
+  const isWrong = blog.domain && !domainsMatch && !isGhostPro;
   if (isWrong) {
     const error: any = new Error('INVALID_REFERER');
-    error.statusCode = 204;
+    error.statusCode = 400;
     error.description = `Not allowed to track from ${requestReferer}`;
     throw error;
   }
@@ -68,7 +68,7 @@ export default async function trackView(
   const blockIP = !isPrivateIP && ipFilters.includes(userIp);
   if (blockIP) {
     const error: any = new Error('BLOCKED_IP');
-    error.statusCode = 204;
+    error.statusCode = 202;
     throw error;
   }
 

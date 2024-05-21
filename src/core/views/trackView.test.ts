@@ -45,7 +45,7 @@ describe('core/views/trackView', () => {
 			expect(true).toEqual(false);
 		} catch (error:any) {
 			expect(error.message).toBe("USERAGENT_IS_BOT");
-			expect(error.statusCode).toEqual(204);
+			expect(error.statusCode).toEqual(202);
 		}
 	});
 
@@ -93,7 +93,7 @@ describe('core/views/trackView', () => {
 			expect(true).toEqual(false);
 		} catch (error:any) {
 			expect(error.message).toBe("IS_PREVIEW");
-			expect(error.statusCode).toEqual(204);
+			expect(error.statusCode).toEqual(202);
 		}
 	});
 
@@ -118,7 +118,7 @@ describe('core/views/trackView', () => {
 			expect(true).toEqual(false);
 		} catch (error:any) {
 			expect(error.message).toBe("BLOCKED_IP");
-			expect(error.statusCode).toEqual(204);
+			expect(error.statusCode).toEqual(202);
 		}
 	});
 
@@ -142,7 +142,7 @@ describe('core/views/trackView', () => {
 			expect(true).toEqual(false);
 		} catch (error:any) {
 			expect(error.message).toBe("INACTIVE_BLOG");
-			expect(error.statusCode).toEqual(204);
+			expect(error.statusCode).toEqual(400);
 		}
 	});
 
@@ -167,7 +167,7 @@ describe('core/views/trackView', () => {
 			expect(true).toEqual(false);
 		} catch (error:any) {
 			expect(error.message).toBe("INVALID_REFERER");
-			expect(error.statusCode).toEqual(204);
+			expect(error.statusCode).toEqual(400);
 		}
 	});
 

@@ -8,11 +8,11 @@ export default async function start() {
       require('@newrelic/fastify');
     }
     api = await build();
-    await api.listen(process.env.PORT || 4000, '0.0.0.0');
-    api.log.info('API started successfully ✅');
+    await api.listen(process.env.PORT, '0.0.0.0');
+    api.log.info('Tracking API started successfully ✅');
     return api;
   } catch (err) {
-    api?.log?.error(err);
+    api?.log?.error(err) || console.error(err);
     process.exit(1);
   }
 }

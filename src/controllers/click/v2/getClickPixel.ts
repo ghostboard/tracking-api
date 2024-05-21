@@ -24,7 +24,7 @@ export default function (fastify: FastifyInstance) {
         useragent &&
         ip;
       if (isValid) {
-        const output = await trackClick(
+        await trackClick(
           blogId,
           origin,
           target,

@@ -58,7 +58,6 @@ describe.skip('findPostBySlug', () => {
     const blogId = '5e742d849f453d4bdc2c762f';
     const slug = '/dodge-charger-stolen-during-test-drive';
     const out = await findPostBySlug(blogId, slug);
-    console.log('>> out', out);
     expect(out).toBeDefined();
     expect(out).toHaveProperty('id');
     expect(out).toHaveProperty('url');

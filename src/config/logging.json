@@ -1,0 +1,13 @@
+{
+  "logRequestStart": false,
+  "disableRequestLogging": true,
+  "loggerOptions": {
+    "transport": {
+      "target": "pino-pretty",
+      "options": {
+        "translateTime": "yyyy-mm-dd HH:MM:ss Z",
+        "ignore": "pid,hostname"
+      }
+    }
+  }
+}

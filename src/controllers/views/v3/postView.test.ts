@@ -46,7 +46,8 @@ describe('POST /v3/views/{blogId}', () => {
 			},
 			payload: {}
 		});
-		expect(response.statusCode).toEqual(204);
+		console.log('>> response2', response.body)
+		expect(response.statusCode).toEqual(202);
 		expect(response.body).toEqual('USERAGENT_IS_BOT');
 		expect(pushToQueueSpy).not.toHaveBeenCalled();
 	});
@@ -82,7 +83,8 @@ describe('POST /v3/views/{blogId}', () => {
 				U: 'http://test.com/p/preview-123'
 			}
 		});
-		expect(response.statusCode).toEqual(204);
+		console.log('>> response4', response.body)
+		expect(response.statusCode).toEqual(202);
 		expect(response.body).toEqual('IS_PREVIEW');
 		expect(pushToQueueSpy).not.toHaveBeenCalled();
 	});
@@ -104,7 +106,7 @@ describe('POST /v3/views/{blogId}', () => {
 				U: 'http://test.com/cool-post'
 			}
 		});
-		expect(response.statusCode).toEqual(204);
+		expect(response.statusCode).toEqual(202);
 		expect(response.body).toEqual('BLOCKED_IP');
 		expect(pushToQueueSpy).not.toHaveBeenCalled();
 	});
@@ -126,7 +128,7 @@ describe('POST /v3/views/{blogId}', () => {
 				U: 'http://test.com/cool-post'
 			}
 		});
-		expect(response.statusCode).toEqual(204);
+		expect(response.statusCode).toEqual(400);
 		expect(response.body).toEqual('INACTIVE_BLOG');
 		expect(pushToQueueSpy).not.toHaveBeenCalled();
 	});
@@ -148,7 +150,7 @@ describe('POST /v3/views/{blogId}', () => {
 				U: 'http://test.com/cool-post'
 			}
 		});
-		expect(response.statusCode).toEqual(204);
+		expect(response.statusCode).toEqual(400);
 		expect(response.body).toEqual('INVALID_REFERER');
 		expect(pushToQueueSpy).not.toHaveBeenCalled();
 	});

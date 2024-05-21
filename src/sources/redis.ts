@@ -23,7 +23,7 @@ export function getConfig(): string {
     config.url = process.env.REDIS_URL;
   } else if (process.env.REDIS_HOST) {
     config.host = process.env.REDIS_HOST;
-    config.port = process.env.REDIS_PORT;
+    config.port = parseInt(process.env.REDIS_PORT || '', 10);
     if (process.env.REDIS_PASSWORD) {
       config.password = process.env.REDIS_PASSWORD;
       config.no_ready_check = true;

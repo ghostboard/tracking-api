@@ -1,0 +1,9 @@
+{
+  "helmet": {
+    "contentSecurityPolicy": false,
+    "dnsPrefetchControl": true,
+    "ieNoOpen": true,
+    "referrerPolicy": false,
+    "xssFilter": true
+  }
+}

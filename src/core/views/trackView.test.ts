@@ -162,4 +162,56 @@ describe('core/views/trackView', () => {
     expect(output.tc).toEqual(1);
     expect(pushToQueueSpy).toHaveBeenCalled();
   });
+
+  test('should track the view, from www subdomain', async () => {
+    getBlogFiltersSpy.mockReturnValue(Promise.resolve([]));
+    getBlogForVisitsSpy.mockReturnValue(
+      Promise.resolve({ enableClient: true, domain: 'test.com' })
+    );
+    getBlogHasClickTrackingSpy.mockReturnValue(Promise.resolve(true));
+    pushToQueueSpy.mockImplementation(() => Promise.resolve(true));
+    const requestIp = '12.34.56.78';
+    const useragent =
+      'Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion';
+    const output = await trackView(
+      'test',
+      '/',
+      'http://www.test.com',
+      '',
+      '',
+      useragent,
+      requestIp,
+      {}
+    );
+    expect(output).toHaveProperty('id');
+    expect(output).toHaveProperty('tc');
+    expect(output.tc).toEqual(1);
+    expect(pushToQueueSpy).toHaveBeenCalled();
+  });
+
+  test('should track the view, without www subdomain', async () => {
+    getBlogFiltersSpy.mockReturnValue(Promise.resolve([]));
+    getBlogForVisitsSpy.mockReturnValue(
+      Promise.resolve({ enableClient: true, domain: 'www.test.com' })
+    );
+    getBlogHasClickTrackingSpy.mockReturnValue(Promise.resolve(true));
+    pushToQueueSpy.mockImplementation(() => Promise.resolve(true));
+    const requestIp = '12.34.56.78';
+    const useragent =
+      'Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion';
+    const output = await trackView(
+      'test',
+      '/',
+      'http://test.com',
+      '',
+      '',
+      useragent,
+      requestIp,
+      {}
+    );
+    expect(output).toHaveProperty('id');
+    expect(output).toHaveProperty('tc');
+    expect(output.tc).toEqual(1);
+    expect(pushToQueueSpy).toHaveBeenCalled();
+  });
 });

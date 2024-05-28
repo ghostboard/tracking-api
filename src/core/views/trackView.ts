@@ -55,8 +55,12 @@ export default async function trackView(
     error.description = 'Please reactivate your blog on Ghostboard.io';
     throw error;
   }
+  const normalizedDomain = blog.domain?.replace(/^www\./, '');
+  const normalizedOrigin = requestReferer?.replace(/^www\./, '');
   const domainsMatch =
-    blog.domain && requestReferer && requestReferer.includes(blog.domain);
+    blog.domain &&
+    requestReferer &&
+    normalizedOrigin.includes(normalizedDomain);
   const isGhostPro = requestReferer && requestReferer.includes('.ghost.io');
   const isWrong = blog.domain && !domainsMatch && !isGhostPro;
   if (isWrong) {

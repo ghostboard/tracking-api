@@ -39,8 +39,8 @@ export default async function build() {
     logger.info(out);
     return res;
   });
-  fastify.register(require('@fastify/cors'), { origin: '*' });
   fastify.register(require('@fastify/helmet'), SECURITY_CONFIG.helmet);
+	fastify.register(require('@fastify/cors'), { origin: '*' });
   fastify.register(require('fastify-no-icon'));
   fastify.register(require('@fastify/formbody'));
   fastify.register(require('./sources/redis'));

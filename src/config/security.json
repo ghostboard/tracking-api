@@ -1,5 +1,6 @@
 {
   "helmet": {
+    "crossOriginResourcePolicy": false,
     "contentSecurityPolicy": false,
     "dnsPrefetchControl": true,
     "ieNoOpen": true,

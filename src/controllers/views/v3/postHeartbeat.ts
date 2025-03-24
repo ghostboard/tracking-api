@@ -30,7 +30,7 @@ export default function (fastify: FastifyInstance) {
       const time = parseInt(body.A, 10) || 0;
       const event = body.B;
       const useragent = req.headers['user-agent'];
-      trackHeartbeat(visitID, time, event, useragent).then().catch();
+      trackHeartbeat(visitID, time, event, useragent, undefined).then().catch();
       return res.code(200).send();
     },
   });

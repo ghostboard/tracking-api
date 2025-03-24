@@ -6,12 +6,12 @@ describe('core/views/trackHeartbeat', () => {
   const pushToHeartbeatQueueSpy = jest.spyOn(pushToHeartbeatQueue, 'default');
 
   test('should not track the heartbeat view if missing viewId', async () => {
-    const output = await trackHeartbeat('', 0, undefined, undefined);
+    const output = await trackHeartbeat('', 0, undefined, undefined, undefined);
     expect(output).toEqual(false);
   });
 
   test('should not track the heartbeat view if viewId is not valid', async () => {
-    const output = await trackHeartbeat('test', 0, undefined, undefined);
+    const output = await trackHeartbeat('test', 0, undefined, undefined, undefined);
     expect(output).toEqual(false);
   });
 
@@ -24,7 +24,8 @@ describe('core/views/trackHeartbeat', () => {
       '12345678901234',
       12,
       'unload',
-      useragent
+      useragent,
+	    10
     );
     expect(output).toEqual(true);
     expect(pushToHeartbeatQueueSpy).toHaveBeenCalled();

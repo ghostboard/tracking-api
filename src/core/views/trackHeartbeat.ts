@@ -5,7 +5,8 @@ export default async function trackHeartbeat(
   viewId: string,
   time: number,
   event: string | undefined,
-  useragent: string | undefined
+  useragent: string | undefined,
+  scrollPercent: number | undefined
 ): Promise<any> {
   const isValidId = viewId && viewId.length > 12;
   if (!isValidId) {
@@ -17,6 +18,7 @@ export default async function trackHeartbeat(
     time,
     event,
     isDesktop: isUseragentDesktop,
+	  scrollPercent
   };
   return pushToHeartbeatQueue(params);
 }

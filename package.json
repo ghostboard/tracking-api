@@ -47,7 +47,7 @@
     "pg": "^8.13.3",
     "pino-pretty": "^11.2.2",
     "redis": "^3.1.2",
-    "turbo-geoip-country": "^25.1.0",
+    "turbo-geoip-country": "^25.4.0",
     "uuid": "^10.0.0",
     "winston": "^3.13.1"
   },

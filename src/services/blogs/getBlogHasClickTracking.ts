@@ -7,7 +7,7 @@ export default async function getBlogHasClickTracking(
   blogId: string
 ): Promise<boolean> {
   const key = `blog:${blogId}:hasClickTracking`;
-  const expirationSeconds = 10 * 60;
+  const expirationSeconds = 2 * 60;
   return new Promise((resolve, reject) => {
     cache.get(key, async (err, item) => {
       if (err) {

@@ -3,7 +3,7 @@ import db from '../../sources/postgres';
 
 export default async function getBlogForVisits(blogId: string): Promise<any> {
   const key = `blog:${blogId}:for_visits`;
-  const expirationSeconds = 5 * 60;
+  const expirationSeconds = 2 * 60;
   return new Promise((resolve, reject) => {
     cache.get(key, async (err, item) => {
       if (err) {

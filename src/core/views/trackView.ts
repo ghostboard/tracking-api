@@ -61,8 +61,9 @@ export default async function trackView(
     blog.domain &&
     requestReferer &&
     normalizedOrigin.includes(normalizedDomain);
-  const isGhostPro = requestReferer && requestReferer.includes('.ghost.io');
-  const isWrong = blog.domain && !domainsMatch && !isGhostPro;
+  const refererIsGhostPro = requestReferer && requestReferer.includes('.ghost.io');
+  const domainIsGhostPro = blog.domain && blog.domain.includes('.ghost.io');
+  const isWrong = blog.domain && !domainsMatch && (!refererIsGhostPro || !domainIsGhostPro);
   if (isWrong) {
     const error: any = new Error('INVALID_REFERER');
     error.statusCode = 400;

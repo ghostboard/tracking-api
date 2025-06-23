@@ -37,7 +37,7 @@
     "@newrelic/fastify": "github:newrelic-experimental/newrelic-javascript-fastify",
     "bullmq": "^5.8.7",
     "fast-glob": "^3.3.3",
-    "fastify": "^4.28.1",
+    "fastify": "^4.29.1",
     "fastify-no-icon": "^6.0.0",
     "fastify-plugin": "^4.5.1",
     "ipaddr.js": "^2.2.0",
@@ -45,11 +45,11 @@
     "knex": "^3.1.0",
     "moment": "^2.30.1",
     "pg": "^8.16.2",
-    "pino-pretty": "^11.2.2",
+    "pino-pretty": "^11.3.0",
     "redis": "^3.1.2",
     "turbo-geoip-country": "^25.4.0",
     "uuid": "^10.0.0",
-    "winston": "^3.13.1"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",

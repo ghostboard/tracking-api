@@ -8,7 +8,11 @@ export default async function start() {
       require('@newrelic/fastify');
     }
     api = await build();
-    await api.listen(process.env.PORT, '0.0.0.0');
+    const options = {
+      port: process.env.PORT,
+      host: '0.0.0.0'
+    };
+    await api.listen(options);
     api.log.info('Tracking API started successfully ✅');
     return api;
   } catch (err) {

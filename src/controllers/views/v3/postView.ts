@@ -1,6 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import trackView from '../../../core/views/trackView';
-import logger from '../../../sources/logger';
 
 export default function (fastify: FastifyInstance) {
   fastify.route({
@@ -32,9 +31,6 @@ export default function (fastify: FastifyInstance) {
         );
         return res.code(200).send(output);
       } catch (error: any) {
-        logger.error(
-          `Error views/${blogId} Body=${JSON.stringify(body)} UA=${useragent} RF=${requestReferer} Error=${error.trace || error}`
-        );
         const { statusCode = 500, message } = error;
         const output = message || '';
         return res.code(statusCode).send(output);

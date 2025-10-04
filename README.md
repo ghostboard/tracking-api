@@ -1,6 +1,6 @@
 # Tracking API
 
-This is the [Ghostboard.io](https://ghostboard.io) tracking API that receives the tracking data (such as views, clicks on text/images and soon, scrolling) from the Ghost blogs
+This is the [Ghostboard.io](https://ghostboard.io) Tracking API that receives the tracking data (such as views, clicks on text/images and scrolling) from Ghost blogs
 
 ## Getting started ✨
 
@@ -21,27 +21,27 @@ Time:        3.057 s
 -------------------------------------------------
 | Dependency          | Time  | Size   | # Deps |
 -------------------------------------------------
-| @newrelic/fastify   | 6.2s  | 55 MB  | 159    |
-| @fastify/formbody   | 1.8s  | 88 KB  | 4      |
-| fastify             | 1.7s  | 7.0 MB | 44     |
-| fastify-no-icon     | 1.1s  | 47 KB  | 2      |
-| turbo-geoip-country | 1.1s  | 27 MB  | 2      |
-| bullmq              | 1s    | 10 MB  | 24     |
-| fast-glob           | 892ms | 532 KB | 16     |
-| @fastify/cors       | 851ms | 564 KB | 4      |
-| winston             | 749ms | 1.9 MB | 30     |
-| pg                  | 709ms | 451 KB | 14     |
-| pino-pretty         | 649ms | 1.6 MB | 30     |
-| redis               | 610ms | 283 KB | 5      |
-| @fastify/helmet     | 592ms | 204 KB | 3      |
-| knex                | 576ms | 3.3 MB | 23     |
-| isbot               | 474ms | 31 KB  | 1      |
-| fastify-plugin      | 462ms | 42 KB  | 1      |
-| moment              | 450ms | 4.4 MB | 1      |
-| uuid                | 437ms | 173 KB | 2      |
-| ipaddr.js           | 409ms | 63 KB  | 1      |
+| @newrelic/fastify   | 8s    | 72 MB  | 139    |
+| fast-glob           | 1.5s  | 532 KB | 16     |
+| pino-pretty         | 1.5s  | 856 KB | 20     |
+| fastify-no-icon     | 1.4s  | 49 KB  | 2      |
+| fastify             | 1.4s  | 7.2 MB | 42     |
+| bullmq              | 1.4s  | 10 MB  | 24     |
+| winston             | 1.2s  | 1.9 MB | 28     |
+| @fastify/cors       | 1.2s  | 215 KB | 3      |
+| pg                  | 1.1s  | 451 KB | 14     |
+| redis               | 983ms | 283 KB | 5      |
+| @fastify/formbody   | 978ms | 92 KB  | 4      |
+| knex                | 963ms | 3.3 MB | 23     |
+| turbo-geoip-country | 841ms | 30 MB  | 2      |
+| moment              | 815ms | 4.4 MB | 1      |
+| isbot               | 809ms | 31 KB  | 1      |
+| fastify-plugin      | 790ms | 45 KB  | 1      |
+| ipaddr.js           | 773ms | 63 KB  | 1      |
+| @fastify/helmet     | 668ms | 220 KB | 3      |
+| uuid                | 627ms | 140 KB | 2      |
 -------------------------------------------------
-Total time (non-deduped): 20.8s
-Total size (non-deduped): 112 MB
+Total time (non-deduped): 26.8s
+Total size (non-deduped): 132 MB
 
 ```

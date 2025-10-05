@@ -16,7 +16,7 @@ export default async function pushToQueue(input): Promise<any> {
     return await TrackingViewQueue.add(jobId, item, options);
   } catch (error: any) {
     logger.error(
-      `errors.pushToQueue(${JSON.stringify(input)}) Error = ${error?.trace || error}`
+      `views.pushToQueue(${JSON.stringify(input)}) Error = ${error?.trace || error}`
     );
   }
 }

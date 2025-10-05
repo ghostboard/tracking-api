@@ -1,13 +1,13 @@
 import TrackingClickQueue from '../../sources/queues/TrackingClickQueue';
 import logger from '../../sources/logger';
 
-export default async function pushToErrorQueue(input) {
+export default async function pushToQueue(input) {
   try {
     const item = {
       ...input,
       created: new Date(),
     };
-    const jobId = `trackingClick-${Date.now()}-${input.blogId}-${input.origin}`;
+    const jobId = `trackingClick-${Date.now()}-${input.blogId}`;
     const options = {
       jobId,
       removeOnComplete: true,
@@ -16,7 +16,7 @@ export default async function pushToErrorQueue(input) {
     return await TrackingClickQueue.add(`item-${jobId}`, item, options);
   } catch (error: any) {
     logger.error(
-      `errors.pushToQueue(${JSON.stringify(input)}) Error = ${error?.trace || error}`
+      `clicks.pushToQueue(${JSON.stringify(input)}) Error = ${error?.trace || error}`
     );
   }
 }

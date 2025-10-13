@@ -29,8 +29,9 @@ export default function (fastify: FastifyInstance) {
 
       const time = parseInt(body.A, 10) || 0;
       const event = body.B;
+      const scrollPercent = body.D ? parseInt(body.D, 10) : undefined;
       const useragent = req.headers['user-agent'];
-      trackHeartbeat(visitID, time, event, useragent, undefined).then().catch();
+      trackHeartbeat(visitID, time, event, useragent, scrollPercent).then().catch();
       return res.code(200).send();
     },
   });

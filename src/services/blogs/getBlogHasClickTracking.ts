@@ -38,7 +38,7 @@ export default async function getBlogHasClickTracking(
         const hasPlan = user && user.plan;
         if (!hasPlan) {
           logger.error(
-            `User plan not found blogId=${blogId} plan=${user.plan}`
+            `User plan not found blogId=${blogId} user=${user ? 'exists' : 'undefined'} plan=${user?.plan || 'undefined'}`
           );
           return resolve(false);
         }

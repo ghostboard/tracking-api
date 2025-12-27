@@ -1,3 +1,5 @@
+import { normalizeUrl } from '../../lib/normalizeUrl';
+
 export default function (
   blog: any,
   path: string,
@@ -13,6 +15,8 @@ export default function (
     return path;
   }
   if (blog.url) {
+    // Normalize blog.url to fix URLs like "https:www.example.com" -> "https://www.example.com"
+    blog.url = normalizeUrl(blog.url) || blog.url;
     const blogHasHttps = blog.url.startsWith('https');
     const pathHasHttps = path.startsWith('https');
     const addHttpsToPath = path.includes(blog.url.replace('https', 'http'));
